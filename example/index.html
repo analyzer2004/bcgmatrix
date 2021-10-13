@@ -1,0 +1,44 @@
+<html>
+<head>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+<body>
+    <script type="module">
+        import BCGMatrix from "../src/bcgmatrix.js";
+
+        d3.csv("./bcg.csv", d3.autoType)
+            .then(data => {
+                new BCGMatrix(document.querySelector("#rootSvg"))
+                    .data(data)
+                    .columns({
+                        name: { name: "Subcategory" },
+                        x: {
+                            name: "Profit",
+                            label: "Profit (USD)",
+                            format: { short: ",.2s", long: ",.0f" }
+                        },
+                        y: {
+                            name: "YOY",
+                            label: "YOY %",
+                            format: { short: ".0%", long: ".1%" }
+                        }
+                    })
+                    .icons({
+                        questionMarks: "./question.svg",
+                        dogs: "./dog.svg",
+                        stars: "./star.svg",
+                        cows: "./cow.svg"
+                    })
+                    .font({
+                        family: "Sans-serif",
+                        size: 9
+                    })
+                    .render();
+            });
+    </script>
+
+    <div id="root">
+        <svg id="rootSvg" viewBox="0 0 1800 960" width="1800" height="960"></svg>
+    </div>
+</body>
+</html>
