@@ -29,7 +29,8 @@ export default class Movable extends BaseRenderer {
 
     invertX(x) { return this.scales.x.invert(x); }
     invertY(y) { return this.scales.y.invert(y); }
-    
+
+    // for d3.transition
     getAttribute(name) { return this[name]; }
     setAttribute(name, value) { if (this[name]) this[name] = value; }        
 

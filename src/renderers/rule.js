@@ -51,13 +51,19 @@ export default class Rule extends Movable {
     move(p) {
         const formats = this.chartData.fieldFormats;
         if (this._isVertical) {
-            const x = this._stick(p.x, this.scales.xTicks);
+            const
+                x = this._stick(p.x, this.scales.xTicks),
+                xt = d3.format(formats.x.long)(this.invertX(x)),
+                len = this.measures.calcStringWidth(xt),
+                exceed = p.x + len > this.xRange[1];
+
             this._x1 = this._x2 = x;
             this._label
-                .attr("x", 5)
+                .attr("x", exceed ? -5 : 5)
                 .attr("y", p.y !== 0 ? p.y : this._y1 - 5)
                 .attr("opacity", 1)
-                .text(d3.format(formats.x.long)(this.invertX(x)));
+                .attr("text-anchor", exceed ? "end" : "start")
+                .text(xt);
             if (this.onmove) this.onmove(x);
         }
         else {
