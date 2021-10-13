@@ -8,6 +8,9 @@ export default class Scales {
         this._y = null;
         this._radius = null;
 
+        this.dotRadius = 5;
+        this.bubbleRadiusRange = [5, 30];
+
         this._xTicks = [];
         this._yTicks = [];
     }
@@ -15,6 +18,10 @@ export default class Scales {
     get x() { return this._x; }
     get y() { return this._y; }
     get radius() { return this._radius; }
+    get isBubble() {
+        const r = this._chart.chartData.extents.radius;
+        return !(r[0] === 0 && r[1] === 0);
+    }
 
     get xTicks() { return this._xTicks; }
     get yTicks() { return this._yTicks; }
@@ -28,8 +35,10 @@ export default class Scales {
             margin = measures.margin;
 
         this._x = ScaleType.getScale(this.xScaleType, data.extents.x, [margin.left, measures.width - margin.right], true);
-        this._y = ScaleType.getScale(this.yScaleType, data.extents.y, [measures.height - margin.bottom, margin.top], true);
-        this._radius = d3.scaleLinear().domain(data.extents.radius).range([0, 20])
+        this._y = ScaleType.getScale(this.yScaleType, data.extents.y, [measures.height - margin.bottom, margin.top], true);        
+        this._radius = this.isBubble
+            ? d3.scaleLinear().domain(data.extents.radius).range(this.bubbleRadiusRange)
+            : _ => this.dotRadius;
 
         this._xTicks = this._x.ticks().map(d => this._x(d));
         this._yTicks = this._y.ticks().map(d => this._y(d));
@@ -51,6 +60,5 @@ class ScaleType {
         if (!scale) scale = d3.scaleLinear();        
         scale.domain(domain).range(range);
         return nice ? scale.nice() : scale;
-
     }
 }

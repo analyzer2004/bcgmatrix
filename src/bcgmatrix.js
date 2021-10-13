@@ -8,6 +8,8 @@ export default class BCGMatrix {
     constructor(container) {
         this._container = container;
 
+        this._options = new BCGMatrixOptions();
+
         this._zones = new Zones();
         this._chartData = new ChartData();
         this._measures = new Measures(this);
@@ -30,6 +32,10 @@ export default class BCGMatrix {
         else {
             return [this._measures.width, this._measures.height];
         }
+    }
+
+    options(_) {
+        return arguments.length ? (this._options = Object.assign(this._options, _), this) : this._options;
     }
 
     colors(_) {
@@ -124,10 +130,23 @@ export default class BCGMatrix {
     }
 
     render() {
+        const options = this._options;
+
         this._chartData.process();
         this._measures.initialize();
+
+        this._scales.dotRadius = options.dotRadius;
+        this._scales.bubbleRadiusRange = options.bubbleRadiusRange;
         this._scales.initialize();
+
         this._coordinator.render();
 
+    }
+}
+
+class BCGMatrixOptions {
+    constructor() {
+        this.dotRadius = 5;
+        this.bubbleRadiusRange = [5, 30];
     }
 }

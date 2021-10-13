@@ -10,6 +10,7 @@ export default class ScatterChart extends BaseRenderer {
 
     get x() { return this.scales.x; }
     get y() { return this.scales.y; }
+    get r() { return this.scales.radius; }
     get xLevel() { return this._xLevel; }
     set xLevel(_) {
         if (this._xLevel !== _) {
@@ -79,7 +80,9 @@ export default class ScatterChart extends BaseRenderer {
             .attr("class", "dot")
             .attr("cx", d => this.x(d[names.x]))
             .attr("cy", d => this.y(d[names.y]))
-            .attr("r", 10);
+            .attr("stroke-width", 2)
+            .attr("opacity", 0.5)
+            .attr("r", d => this.r(d[names.radius]));
         this._updateColor();
     }
 
@@ -121,6 +124,8 @@ export default class ScatterChart extends BaseRenderer {
     }
 
     _updateColor() {
-        this._dots.attr("fill", d => this._getColor(d));
+        this._dots
+            .attr("stroke", d => d3.color(this._getColor(d)).darker(1))
+            .attr("fill", d => this._getColor(d));
     }
 }

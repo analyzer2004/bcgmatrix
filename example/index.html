@@ -6,21 +6,31 @@
     <script type="module">
         import BCGMatrix from "../src/bcgmatrix.js";
 
-        d3.csv("./bcg.csv", d3.autoType)
+        d3.csv("./bcg2.csv", d3.autoType)
             .then(data => {
                 new BCGMatrix(document.querySelector("#rootSvg"))
-                    .data(data)
+                    .size([1280, 960])
+                    .options({
+                        dotRadius: 5,
+                        bubbleRadiusRange: [5, 40]
+                    })
+                    .data(data.filter(d => d.Year === 2021))
                     .columns({
                         name: { name: "Subcategory" },
                         x: {
-                            name: "Profit",
-                            label: "Profit (USD)",
+                            name: "Sales",
+                            label: "Sales (USD)",
                             format: { short: ",.2s", long: ",.0f" }
                         },
                         y: {
                             name: "YOY",
                             label: "YOY %",
                             format: { short: ".0%", long: ".1%" }
+                        },
+                        radius: {
+                            name: "Profit",
+                            label: "Profit (USD)",
+                            format: { short: ",.2s", long: ",.0f" }
                         }
                     })
                     .icons({
