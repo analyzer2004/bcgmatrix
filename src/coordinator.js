@@ -1,5 +1,5 @@
 import ScatterChart from "./renderers/scatterchart.js";
-import Label from "./renderers/label.js";
+import Cell from "./renderers/cell.js";
 import Rule from "./renderers/rule.js";
 import Grip from "./renderers/grip.js";
 
@@ -21,6 +21,8 @@ export default class Coordinator {
     }
 
     get chart() { return this._chart; }
+    get width() { return this.chart.measures.width; }
+    get height() { return this.chart.measures.height; }
     get svg() { return this._svg; }
     get colors() { return this._colors; }
     get scatterChart() { return this._scatterChart; }
@@ -35,39 +37,52 @@ export default class Coordinator {
     }
 
     _renderSvg() {
-        const
-            w = this.chart.measures.width,
-            h = this.chart.measures.height;
+        const { width, height } = this;
 
         this._svg = d3.select(this.chart.container)
             .append("svg")
-            .attr("viewBox", [0, 0, w, h])
-            .attr("width", w)
-            .attr("height", h);
+            .attr("viewBox", [0, 0, width, height])
+            .attr("width", width)
+            .attr("height", height);
         this.chart.measures.font.applyTo(this._svg);
     }
 
-    _renderBackground(w, h) {
-        this.renderRect(0, 0, this.chart.measures.width, this.chart.measures.height, this._colors.background);
+    _renderBackground() {
+        this.renderRect(0, 0, this.width, this.height, this._colors.background);
     }
 
     _renderLabels() {
         const
             zones = this.chart.zones,
-            { x, y, xr, yr, xc, yc } = this._getScales();
-
-        this._questionMarks = new Label(this._svg, xr[0], yr[1], zones.questionMarks.icon, zones.questionMarks.caption).render();
-        this._stars = new Label(this._svg, xc, yr[1], zones.stars.icon, zones.stars.caption).render();
-        this._dogs = new Label(this._svg, xr[0], yc, zones.dogs.icon, zones.dogs.caption).render();
-        this._cows = new Label(this._svg, xc, yc, zones.cows.icon, zones.cows.caption).render();
+            { x, y, xr, yr, xc, yc } = this._getScales(),
+            m = this.chart.measures.margin,
+            w = this.width - m.right - xc,
+            h = this.height - m.bottom - yc;
+        
+        this._questionMarks = new Cell(this._svg, xr[0], yr[1], w, h, zones.questionMarks).render();
+        this._stars = new Cell(this._svg, xc, yr[1], w, h, zones.stars).render();
+        this._dogs = new Cell(this._svg, xr[0], yc, w, h, zones.dogs).render();
+        this._cows = new Cell(this._svg, xc, yc, w, h, zones.cows).render();
     }
 
     _renderRules() {
-        const { x, y, xr, yr, xc, yc } = this._getScales();
+        const
+            m = this.chart.measures.margin,
+            w = this.width - m.right - m.left,
+            h = this.height - m.bottom - m.top,
+            { x, y, xr, yr, xc, yc } = this._getScales();
 
         this._ruleX = new Rule(this, xc, yr[0], xc, yr[1]);
         this._ruleX.onmove = xp => {
-            this._stars.x = xp;
+            const
+                left = w - (w - xp) - m.left,
+                right = w - left;
+                
+            this._questionMarks.width = left;
+            this._dogs.width = left;
+            this._stars.width = right;
+            this._cows.width = right;
+            this._stars.x = xp;            
             this._cows.x = xp;
             this._grip.x = xp;
             this._scatterChart.xLevel = x.invert(xp);
@@ -76,6 +91,14 @@ export default class Coordinator {
 
         this._ruleY = new Rule(this, xr[0], yc, xr[1], yc);
         this._ruleY.onmove = yp => {
+            const
+                top = h - (h - yp) - m.top,
+                bottom = h - top;
+
+            this._questionMarks.height = top;
+            this._stars.height = top;
+            this._dogs.height = bottom;
+            this._cows.height = bottom;
             this._dogs.y = yp;
             this._cows.y = yp;
             this._grip.y = yp;
