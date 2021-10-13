@@ -58,7 +58,7 @@ export default class Coordinator {
             m = this.chart.measures.margin,
             w = this.width - m.right - xc,
             h = this.height - m.bottom - yc;
-        
+
         this._questionMarks = new Cell(this._svg, xr[0], yr[1], w, h, zones.questionMarks).render();
         this._stars = new Cell(this._svg, xc, yr[1], w, h, zones.stars).render();
         this._dogs = new Cell(this._svg, xr[0], yc, w, h, zones.dogs).render();
@@ -67,43 +67,20 @@ export default class Coordinator {
 
     _renderRules() {
         const
+            that = this,
             m = this.chart.measures.margin,
             w = this.width - m.right - m.left,
             h = this.height - m.bottom - m.top,
             { x, y, xr, yr, xc, yc } = this._getScales();
 
         this._ruleX = new Rule(this, xc, yr[0], xc, yr[1]);
-        this._ruleX.onmove = xp => {
-            const
-                left = w - (w - xp) - m.left,
-                right = w - left;
-                
-            this._questionMarks.width = left;
-            this._dogs.width = left;
-            this._stars.width = right;
-            this._cows.width = right;
-            this._stars.x = xp;            
-            this._cows.x = xp;
-            this._grip.x = xp;
-            this._scatterChart.xLevel = x.invert(xp);
-        }
+        this._ruleX.onmove = moveX;
+        this._ruleX.onreset = resetX;
         this._ruleX.render();
 
         this._ruleY = new Rule(this, xr[0], yc, xr[1], yc);
-        this._ruleY.onmove = yp => {
-            const
-                top = h - (h - yp) - m.top,
-                bottom = h - top;
-
-            this._questionMarks.height = top;
-            this._stars.height = top;
-            this._dogs.height = bottom;
-            this._cows.height = bottom;
-            this._dogs.y = yp;
-            this._cows.y = yp;
-            this._grip.y = yp;
-            this._scatterChart.yLevel = y.invert(yp);
-        }
+        this._ruleY.onmove = moveY;
+        this._ruleY.onreset = resetY;
         this._ruleY.render();
 
         this._grip = new Grip(this, xc, yc);
@@ -111,11 +88,63 @@ export default class Coordinator {
             this._ruleX.position = xp;
             this._ruleY.position = yp;
         }
+        this._grip.onreset = e => {
+            resetX();
+            resetY();
+        }
         this._grip.render();
+
+        function moveX(xp) {
+            const
+                left = w - (w - xp) - m.left,
+                right = w - left;
+
+            that._questionMarks.width = left;
+            that._dogs.width = left;
+            that._stars.width = right;
+            that._cows.width = right;
+            that._stars.x = xp;
+            that._cows.x = xp;
+            that._grip.x = xp;
+            that._scatterChart.xLevel = x.invert(xp);
+        }
+
+        function resetX(e) {
+            d3.select(that._ruleX)
+                .transition()
+                .duration(500)
+                .ease(d3.easeBounce)
+                .attr("position", xc)
+                .on("end", () => that._ruleX.hideLabel());
+        }
+
+        function moveY(yp) {
+            const
+                top = h - (h - yp) - m.top,
+                bottom = h - top;
+
+            that._questionMarks.height = top;
+            that._stars.height = top;
+            that._dogs.height = bottom;
+            that._cows.height = bottom;
+            that._dogs.y = yp;
+            that._cows.y = yp;
+            that._grip.y = yp;
+            that._scatterChart.yLevel = y.invert(yp);
+        }
+
+        function resetY(e) {
+            d3.select(that._ruleY)
+                .transition()
+                .duration(500)
+                .ease(d3.easeBounce)
+                .attr("position", yc)
+                .on("end", () => that._ruleY.hideLabel());
+        }
     }
 
     _getScales() {
-        const            
+        const
             x = this.chart.scales.x,
             y = this.chart.scales.y,
             xr = x.range(),

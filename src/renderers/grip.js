@@ -31,9 +31,8 @@ export default class Grip extends Movable {
             .attr("cy", this._r)
             .attr("r", this._r)
             .attr("opacity", 0)
-            .style("cursor", "all-scroll")
-            .on("pointerdown", this.handlePointerDown.bind(this));
-        return super.render();        
+            .style("cursor", "all-scroll");            
+        return super.render(this._circle);        
     }
 
     transform() {

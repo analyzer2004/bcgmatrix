@@ -44,9 +44,8 @@ export default class Rule extends Movable {
                     .attr("font-weight", "bold")
                     .attr("font-size", 11)
                     .attr("opacity", 0);
-            })
-            .on("pointerdown", this.handlePointerDown.bind(this));
-        return super.render();
+            });
+        return super.render(this._g);
     }
 
     move(p) {
@@ -83,7 +82,7 @@ export default class Rule extends Movable {
 
     handlePointerUp(e) {
         super.handlePointerUp(e);
-        this._label.attr("opacity", 0);
+        this.hideLabel();
     }
 
     transform() {
@@ -95,11 +94,15 @@ export default class Rule extends Movable {
         }
     }
 
+    hideLabel() {
+        this._label.attr("opacity", 0);
+    }
+
     _stick(v, ticks) {
         for (let i = 0; i < ticks.length; i++) {
             const tick = ticks[i];
             if (v >= tick - this._gravity && v <= tick + this._gravity) return tick;
         }
         return v;
-    }    
+    }
 }

@@ -6,6 +6,10 @@ export default class ScatterChart extends BaseRenderer {
         this._dots = null;
         this._xLevel = this.scales.xDefault;
         this._yLevel = this.scales.yDefault;
+
+        this.onhover = null;
+        this.onleave = null;
+        this.onclick = null;
     }
 
     get x() { return this.scales.x; }
@@ -82,7 +86,10 @@ export default class ScatterChart extends BaseRenderer {
             .attr("cy", d => this.y(d[names.y]))
             .attr("stroke-width", 2)
             .attr("opacity", 0.5)
-            .attr("r", d => this.r(d[names.radius]));
+            .attr("r", d => this.r(d[names.radius]))
+            .on("pointerenter", (e, d) => this._handlePointerEnter(e, d))
+            .on("pointerleave", (e, d) => this._handlePointerLeave(e, d))
+            .on("click", (e, d) => this._handleClick(e, d));
         this._updateColor();
     }
 
@@ -127,5 +134,17 @@ export default class ScatterChart extends BaseRenderer {
         this._dots
             .attr("stroke", d => d3.color(this._getColor(d)).darker(1))
             .attr("fill", d => this._getColor(d));
+    }
+
+    _handlePointerEnter(e, d) {
+        this._dots.attr("opacity", dot => dot === d ? 0.75 : 0.5);
+    }
+
+    _handlePointerLeave(e, d) {
+        this._dots.attr("opacity", 0.5);
+    }
+
+    _handleClick(e, d) {
+
     }
 }

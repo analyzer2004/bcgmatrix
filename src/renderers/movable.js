@@ -7,12 +7,20 @@ export default class Movable extends BaseRenderer {
 
         this.down = false;
         this.onmove = null;
+        this.onreset = null;
     }
 
     get xRange() { return this.scales.x.range(); }
     get yRange() { return this.scales.y.range(); }
 
-    render() {
+    render(elem) {
+        if (elem) {
+            elem.on("pointerdown", this.handlePointerDown.bind(this));
+            if (this.onreset) {
+                this.reset();
+                elem.on("dblclick", e => this.onreset(e));
+            }
+        }
         document.addEventListener("pointermove", this.handlePointerMove.bind(this));
         document.addEventListener("pointerup", this.handlePointerUp.bind(this));
         this.transform();
@@ -21,10 +29,15 @@ export default class Movable extends BaseRenderer {
 
     invertX(x) { return this.scales.x.invert(x); }
     invertY(y) { return this.scales.y.invert(y); }
+    
+    getAttribute(name) { return this[name]; }
+    setAttribute(name, value) { if (this[name]) this[name] = value; }        
 
     transform() { }
 
     move(p) { }
+
+    reset() { }
 
     testBoundary(p) { }
 
