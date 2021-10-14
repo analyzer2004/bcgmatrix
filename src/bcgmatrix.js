@@ -143,6 +143,8 @@ export default class BCGMatrix {
         this._scales.initialize();
 
         this._coordinator.highlight = Highlight[options.highlightScope];
+        this._coordinator.showTooltip = options.showTooltip;
+        this._coordinator.showAnnotation = options.showAnnotation;
         this._coordinator.render();
     }
 }
@@ -153,5 +155,7 @@ class BCGMatrixOptions {
         this.bubbleRadiusRange = [5, 30];
         this.highlightScope = "none"; // "none", "all", "min", "max", "minMax", "top", "bottom", "topBottom"
         this.numberOfTopBottom = 5;
+        this.showTooltip = true;
+        this.showAnnotation = true;
     }
 }

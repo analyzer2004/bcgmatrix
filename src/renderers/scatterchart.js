@@ -14,6 +14,8 @@ class ScatterChart extends BaseRenderer {
         this._infoLayer = new InfoLayer(this.svg, this.font);
 
         this.highlight = Highlight.none;
+        this.showTooltip = true;
+        this.showAnnotation = true;
 
         this.onhover = null;
         this.onleave = null;
@@ -69,6 +71,8 @@ class ScatterChart extends BaseRenderer {
                 return { left, top };
             }
         }
+        this._infoLayer.showTooltip = this.showTooltip;
+        this._infoLayer.showAnnotation = this.showAnnotation;
         this._infoLayer.initialize();
     }
 

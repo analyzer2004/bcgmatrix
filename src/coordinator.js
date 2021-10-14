@@ -10,6 +10,8 @@ export default class Coordinator {
         this._colors = new Colors();
 
         this.highlight = Highlight.none;
+        this.showTooltip = true;
+        this.showAnnotation = true;
         this._scatterChart = null;
         this._ruleX = null;
         this._ruleY = null;
@@ -35,6 +37,8 @@ export default class Coordinator {
         this._renderLabels();
         this._scatterChart = new ScatterChart(this);
         this._scatterChart.highlight = this.highlight;
+        this._scatterChart.showTooltip = this.showTooltip;
+        this._scatterChart.showAnnotation = this.showAnnotation;
         this._scatterChart.render();
 
         this._renderRules();
