@@ -13,7 +13,9 @@
                     .options({
                         dotRadius: 5,
                         bubbleRadiusRange: [5, 40],
-                        highlightScope: "topBottom"
+                        highlightScope: "topBottom",
+                        xInitValue: 4000000,
+                        yInitValue: 0.4
                     })
                     .data(data.filter(d => d.Year === 2021))
                     .columns({
@@ -45,7 +47,8 @@
                         size: 9
                     })
                     .events({
-                        onhover: d => console.log(d)
+                        onhover: d => console.log(d),
+                        onrulechange: (id, pos, value) => console.log(`${id}: (${pos},${value})`)
                     })
                     .render();
             });

@@ -7,6 +7,7 @@ export default class Grip extends Movable {
         this._x = x;
         this._y = y;
         this._circle = null;
+        this.onchange = null;
     }
 
     get x() { return this._x; }

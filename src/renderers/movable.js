@@ -8,6 +8,7 @@ export default class Movable extends BaseRenderer {
         this.down = false;
         this.onmove = null;
         this.onreset = null;
+        this.onchange = null;
     }
 
     get xRange() { return this.scales.x.range(); }
@@ -56,6 +57,7 @@ export default class Movable extends BaseRenderer {
     }
 
     handlePointerUp(e) {
+        if (this.down && this.onchange) this.onchange();
         this.down = false;
     }
 

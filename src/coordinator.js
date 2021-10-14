@@ -21,6 +21,9 @@ export default class Coordinator {
 
         this.highlight = Highlight.none;
         this.showTicksOnRules = true;
+        this.xInitValue = null;
+        this.yInitValue = null;
+        this.onrulechange = null;
     }
 
     get chart() { return this._chart; }
@@ -34,12 +37,8 @@ export default class Coordinator {
         this._renderSvg();
         this._renderBackground();
 
-        this._renderLabels();        
-        this._scatterChart.highlight = this.highlight;
-        this._scatterChart.showTooltip = this.showTooltip;
-        this._scatterChart.showAnnotation = this.showAnnotation;
-        this._scatterChart.render();
-
+        this._renderLabels();
+        this._renderScatterChart();
         this._renderRules();
     }
 
@@ -63,13 +62,22 @@ export default class Coordinator {
             zones = this.chart.zones,
             { x, y, xr, yr, xc, yc } = this._getScales(),
             m = this.chart.measures.margin,
-            w = this.width - m.right - xc,
-            h = this.height - m.bottom - yc;
+            w = this.width - m.right,
+            h = this.height - m.bottom;
 
-        this._questionMarks = new Cell(this._svg, xr[0], yr[1], w, h, zones.questionMarks).render();
-        this._stars = new Cell(this._svg, xc, yr[1], w, h, zones.stars).render();
-        this._dogs = new Cell(this._svg, xr[0], yc, w, h, zones.dogs).render();
-        this._cows = new Cell(this._svg, xc, yc, w, h, zones.cows).render();
+        this._questionMarks = new Cell(this._svg, xr[0], yr[1], xc - xr[0], yc - yr[1], zones.questionMarks).render();
+        this._stars = new Cell(this._svg, xc, yr[1], w - xc, yc - yr[1], zones.stars).render();
+        this._dogs = new Cell(this._svg, xr[0], yc, xc - xr[0], h - yc, zones.dogs).render();
+        this._cows = new Cell(this._svg, xc, yc, w - xc, h - yc, zones.cows).render();
+    }
+
+    _renderScatterChart() {
+        this._scatterChart.xLevel = this.xInitValue;
+        this._scatterChart.yLevel = this.yInitValue;
+        this._scatterChart.highlight = this.highlight;
+        this._scatterChart.showTooltip = this.showTooltip;
+        this._scatterChart.showAnnotation = this.showAnnotation;
+        this._scatterChart.render();
     }
 
     _renderRules() {
@@ -79,17 +87,19 @@ export default class Coordinator {
             w = this.width - m.right - m.left,
             h = this.height - m.bottom - m.top,
             { x, y, xr, yr, xc, yc } = this._getScales();
-
+        
         this._ruleX = new Rule(this, xc, yr[0], xc, yr[1]);
         this._ruleX.showTicks = this.showTicksOnRules;
         this._ruleX.onmove = moveX;
         this._ruleX.onreset = resetX;
+        this._ruleX.onchange = () => change(1, this._ruleX.position, this._ruleX.value);
         this._ruleX.render();
-
+        
         this._ruleY = new Rule(this, xr[0], yc, xr[1], yc);
         this._ruleY.showTicks = this.showTicksOnRules;
         this._ruleY.onmove = moveY;
         this._ruleY.onreset = resetY;
+        this._ruleY.onchange = () => change(2, this._ruleY.position, this._ruleY.value);
         this._ruleY.render();
 
         this._grip = new Grip(this, xc, yc);
@@ -100,6 +110,10 @@ export default class Coordinator {
         this._grip.onreset = e => {
             resetX();
             resetY();
+        }
+        this._grip.onchange = () => {
+            change(1, this._ruleX.position, this._ruleX.value);
+            change(2, this._ruleY.position, this._ruleY.value);
         }
         this._grip.render();
 
@@ -150,6 +164,10 @@ export default class Coordinator {
                 .attr("position", yc)
                 .on("end", () => that._ruleY.hideLabel());
         }
+
+        function change(id, pos, value) {
+            if (that.onrulechange) that.onrulechange(id, pos, value);
+        }
     }
 
     _getScales() {
@@ -158,8 +176,8 @@ export default class Coordinator {
             y = this.chart.scales.y,
             xr = x.range(),
             yr = y.range(),
-            xc = x(this.chart.scales.xDefault),
-            yc = y(this.chart.scales.yDefault);
+            xc = this.xInitValue ? x(this.xInitValue) : x(this.chart.scales.xDefault),
+            yc = this.yInitValue ? y(this.yInitValue) : y(this.chart.scales.yDefault);
         return { x, y, xr, yr, xc, yc };
     }
 

@@ -13,6 +13,7 @@ export default class Rule extends Movable {
         this._g = null;
         this._label = null;
         this.showTicks = true;
+        this.onchange = null;
     }
 
     get position() { return this._isVertical ? this._x1 : this._y1; }
@@ -22,6 +23,7 @@ export default class Rule extends Movable {
         p.y = this._isVertical ? 0 : _;
         this.move(p);
     }
+    get value() { return this._isVertical ? this.invertX(this._x1) : this.invertY(this._y1); }
 
     render() {
         const
@@ -110,9 +112,9 @@ export default class Rule extends Movable {
             : p.y >= yRange[1] && p.y <= yRange[0];
     }
 
-    handlePointerUp(e) {
+    handlePointerUp(e) {        
         super.handlePointerUp(e);
-        this.hideLabel();
+        this.hideLabel();        
     }
 
     transform() {

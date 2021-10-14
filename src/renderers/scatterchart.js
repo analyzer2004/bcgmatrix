@@ -29,7 +29,6 @@ class ScatterChart extends BaseRenderer {
             this._xLevel = _;
             this._updateColor();
         }
-
     }
     get yLevel() { return this._yLevel; }
     set yLevel(_) {
@@ -42,8 +41,8 @@ class ScatterChart extends BaseRenderer {
     get infoLayer() { return this._infoLayer; }
 
     render() {
-        this._xLevel = this.scales.xDefault;
-        this._yLevel = this.scales.yDefault;
+        this._xLevel = this._xLevel ?? this.scales.xDefault;
+        this._yLevel = this._yLevel ?? this.scales.yDefault;
         this._renderXAxis();
         this._renderYAxis();
         this._renderDots();
@@ -173,9 +172,11 @@ class ScatterChart extends BaseRenderer {
     }
 
     _updateColor() {
-        this._dots.select("circle")
-            .attr("stroke", d => d3.color(this._getColor(d)).darker(1))
-            .attr("fill", d => this._getColor(d));
+        if (this._dots) {
+            this._dots.select("circle")
+                .attr("stroke", d => d3.color(this._getColor(d)).darker(1))
+                .attr("fill", d => this._getColor(d));
+        }
     }
 
     _getTooltipContent(d) {
