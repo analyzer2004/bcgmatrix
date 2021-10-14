@@ -9,7 +9,6 @@ export default class Coordinator {
         this._svg = null;
         this._colors = new Colors();
 
-        this.highlight = Highlight.none;
         this._scatterChart = new ScatterChart(this);
         this._ruleX = null;
         this._ruleY = null;
@@ -19,6 +18,9 @@ export default class Coordinator {
         this._stars = null;
         this._dogs = null;
         this._cows = null;
+
+        this.highlight = Highlight.none;
+        this.showTicksOnRules = true;
     }
 
     get chart() { return this._chart; }
@@ -79,11 +81,13 @@ export default class Coordinator {
             { x, y, xr, yr, xc, yc } = this._getScales();
 
         this._ruleX = new Rule(this, xc, yr[0], xc, yr[1]);
+        this._ruleX.showTicks = this.showTicksOnRules;
         this._ruleX.onmove = moveX;
         this._ruleX.onreset = resetX;
         this._ruleX.render();
 
         this._ruleY = new Rule(this, xr[0], yc, xr[1], yc);
+        this._ruleY.showTicks = this.showTicksOnRules;
         this._ruleY.onmove = moveY;
         this._ruleY.onreset = resetY;
         this._ruleY.render();

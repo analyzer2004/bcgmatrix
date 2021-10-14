@@ -12,6 +12,7 @@ export default class Rule extends Movable {
 
         this._g = null;
         this._label = null;
+        this.showTicks = true;
     }
 
     get position() { return this._isVertical ? this._x1 : this._y1; }
@@ -23,6 +24,11 @@ export default class Rule extends Movable {
     }
 
     render() {
+        const
+            scale = this._isVertical ? this.scales.y : this.scales.x,
+            ticks = this._isVertical ? this.scales.yTicks : this.scales.xTicks,
+            format = this._isVertical ? this.chartData.fieldFormats.y : this.chartData.fieldFormats.x;
+
         this._g = this.svg.append("g")
             .call(g => {
                 g.append("line")
@@ -44,6 +50,24 @@ export default class Rule extends Movable {
                     .attr("font-weight", "bold")
                     .attr("font-size", 11)
                     .attr("opacity", 0);
+
+                if (this.showTicks) {
+                    g.selectAll(".tick")
+                        .data(ticks.slice(1, ticks.length - 1))
+                        .join("text")
+                        .attr("class", "tick")
+                        .attr("text-anchor", "middle")
+                        .attr("dy", "0.32em")
+                        .attr("stroke", "white")
+                        .attr("stroke-width", 2)
+                        .attr(this._isVertical ? "y" : "x", d => d)
+                        .text(d => d3.format(format.short)(scale.invert(d)))
+                        .clone()
+                        .attr("stroke", "none")
+                        .attr("stroke-width", 0)
+                        .attr("fill", "#aaa")
+                        .text(d => d3.format(format.short)(scale.invert(d)));
+                }
             });
         return super.render(this._g);
     }

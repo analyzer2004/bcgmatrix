@@ -159,6 +159,7 @@ export default class BCGMatrix {
         this._scales.initialize();
 
         this._coordinator.highlight = Highlight[options.highlightScope];
+        this._coordinator.showTicksOnRules = options.showTicksOnRules;
         this._coordinator.scatterChart.infoLayer.showTooltip = options.showTooltip;
         this._coordinator.scatterChart.infoLayer.showAnnotation = options.showAnnotation;
         this._coordinator.render();
@@ -173,5 +174,6 @@ class BCGMatrixOptions {
         this.numberOfTopBottom = 5;
         this.showTooltip = true;
         this.showAnnotation = true;
+        this.showTicksOnRules = true;
     }
 }
