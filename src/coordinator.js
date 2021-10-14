@@ -1,4 +1,4 @@
-import ScatterChart from "./renderers/scatterchart.js";
+import { ScatterChart, Highlight } from "./renderers/scatterchart.js";
 import Cell from "./renderers/cell.js";
 import Rule from "./renderers/rule.js";
 import Grip from "./renderers/grip.js";
@@ -9,6 +9,7 @@ export default class Coordinator {
         this._svg = null;
         this._colors = new Colors();
 
+        this.highlight = Highlight.none;
         this._scatterChart = null;
         this._ruleX = null;
         this._ruleY = null;
@@ -32,7 +33,10 @@ export default class Coordinator {
         this._renderBackground();
 
         this._renderLabels();
-        this._scatterChart = new ScatterChart(this).render();
+        this._scatterChart = new ScatterChart(this);
+        this._scatterChart.highlight = this.highlight;
+        this._scatterChart.render();
+
         this._renderRules();
     }
 

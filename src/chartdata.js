@@ -1,16 +1,21 @@
 class ChartData {
     constructor() {
-        this.dataset = null;
+        this._dataset = null;
         this._fieldInfos = new FieldInfos();
         this._extents = new Extents();
+
+        this.numOfTopBottom = 5;
     }
+
+    get dataset() { return this._dataset; }
+    set dataset(_) { this._transformData(_); }
 
     get extents() { return this._extents; }
     get fieldInfos() { return this._fieldInfos; }
     get fieldNames() { return this._fieldInfos.names; }
     get fieldFormats() { return this._fieldInfos.formats; }
 
-    process() {
+    process(source) {
         const
             names = this.fieldNames,
             test = (v, [v1, v2]) => {
@@ -19,14 +24,28 @@ class ChartData {
                 return [v1, v2];
             }
 
-        for (let i = 0; i < this.dataset.length; i++) {
-            const row = this.dataset[i];
-            this.extents.x = test(row[names.x], this.extents.x);
-            this.extents.y = test(row[names.y], this.extents.y);
-            this.extents.radius = test(row[names.radius], this.extents.radius);
+        this._dataset = source.map(d => {
+            const row = {
+                name: d[names.name],
+                x: d[names.x],
+                y: d[names.y],
+                r: d[names.radius],
+                flag: ValueFlag.unspecified
+            };
+            this.extents.x = test(row.x, this.extents.x);
+            this.extents.y = test(row.y, this.extents.y);
+            this.extents.radius = test(row.r, this.extents.radius);
+            return row;
+        }).sort((a, b) => a.r - b.r);
+
+        const len = this._dataset.length;
+        if (names.radius && names.radius !== "") {
+            this._dataset[0].flag = ValueFlag.min;
+            this._dataset[len - 1].flag = ValueFlag.max;
+            this._dataset.slice(0, this.numOfTopBottom).forEach(d => d.flag |= ValueFlag.bottomGroup);
+            this._dataset.slice(-this.numOfTopBottom).forEach(d => d.flag |= ValueFlag.topGroup);
         }
     }
-
 }
 
 class FieldInfos {
@@ -81,4 +100,12 @@ class Extents {
     }
 }
 
-export { ChartData };
+class ValueFlag {
+    static get unspecified() { return 0; }
+    static get min() { return 1; }
+    static get max() { return 2; }
+    static get bottomGroup() { return 4; }
+    static get topGroup() { return 8; }
+}
+
+export { ChartData, ValueFlag };

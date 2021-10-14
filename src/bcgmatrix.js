@@ -1,6 +1,7 @@
 import { ChartData } from "./chartdata.js";
 import Coordinator from "./coordinator.js";
-import { Measures }from "./measures.js";
+import { Measures } from "./measures.js";
+import { Highlight } from "./renderers/scatterchart.js";
 import Scales from "./scales.js";
 import Zones from "./zones.js";
 
@@ -8,6 +9,7 @@ export default class BCGMatrix {
     constructor(container) {
         this._container = container;
 
+        this._dataset = null;
         this._options = new BCGMatrixOptions();
 
         this._zones = new Zones();
@@ -126,21 +128,22 @@ export default class BCGMatrix {
     }
 
     data(_) {
-        return arguments.length ? (this._chartData.dataset = _, this) : this._chartData.dataset;
+        return arguments.length ? (this._dataset = _, this) : this._dataset;
     }
 
     render() {
         const options = this._options;
 
-        this._chartData.process();
+        this._chartData.numOfTopBottom = options.numberOfTopBottom;
+        this._chartData.process(this._dataset);
         this._measures.initialize();
 
         this._scales.dotRadius = options.dotRadius;
         this._scales.bubbleRadiusRange = options.bubbleRadiusRange;
         this._scales.initialize();
 
+        this._coordinator.highlight = Highlight[options.highlightScope];
         this._coordinator.render();
-
     }
 }
 
@@ -148,5 +151,7 @@ class BCGMatrixOptions {
     constructor() {
         this.dotRadius = 5;
         this.bubbleRadiusRange = [5, 30];
+        this.highlightScope = "none"; // "none", "all", "min", "max", "minMax", "top", "bottom", "topBottom"
+        this.numberOfTopBottom = 5;
     }
 }
