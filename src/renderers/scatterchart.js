@@ -1,4 +1,5 @@
 ﻿import BaseRenderer from "./baserenderer.js";
+import InfoLayer from "./infolayer.js";
 
 export default class ScatterChart extends BaseRenderer {
     constructor(coordinator) {
@@ -6,6 +7,9 @@ export default class ScatterChart extends BaseRenderer {
         this._dots = null;
         this._xLevel = this.scales.xDefault;
         this._yLevel = this.scales.yDefault;
+
+        this._focus = null;
+        this._infoLayer = new InfoLayer(this.svg, this.font);
 
         this.onhover = null;
         this.onleave = null;
@@ -38,8 +42,30 @@ export default class ScatterChart extends BaseRenderer {
         this._renderXAxis();
         this._renderYAxis();
         this._renderDots();
+        this._initInfoLayer();
 
         return this;
+    }
+
+    _initInfoLayer() {
+        this._infoLayer.assignDelegates = (obj, font) => {
+            obj.getBBox = s => this.measures.getBBox(s, font);
+            obj.calcTextWidth = s => this.measures.calcStringWidth(s, font);
+            obj.calcPosition = (c, b) => {
+                const
+                    box = this.svg.node().getBoundingClientRect(),
+                    x = c.x + box.left,
+                    y = c.y + box.top;
+
+                const
+                    t = 5,
+                    left = x + b.width + t > box.right ? c.x - b.width - t : c.x + t,
+                    top = y + b.height + t > box.bottom ? c.y - b.height - t : c.y + t;
+
+                return { left, top };
+            }
+        }
+        this._infoLayer.initialize();
     }
 
     _renderXAxis() {
@@ -88,13 +114,10 @@ export default class ScatterChart extends BaseRenderer {
             .attr("opacity", 0.5)
             .attr("r", d => this.r(d[names.radius]))
             .on("pointerenter", (e, d) => this._handlePointerEnter(e, d))
+            .on("pointermove", (e, d) => this._handlePointerMove(e, d))
             .on("pointerleave", (e, d) => this._handlePointerLeave(e, d))
             .on("click", (e, d) => this._handleClick(e, d));
         this._updateColor();
-    }
-
-    _renderLabels() {
-
     }
 
     _xAxis(g) {
@@ -136,15 +159,52 @@ export default class ScatterChart extends BaseRenderer {
             .attr("fill", d => this._getColor(d));
     }
 
-    _handlePointerEnter(e, d) {
+    _getTooltipContent(d) {
+        const
+            names = this.chartData.fieldNames,
+            formats = this.chartData.fieldFormats;
+
+        const content = [
+            `${d[names.name]}`,
+            `${names.x}: ${d3.format(formats.x.long)(d[names.x])}`,
+            `${names.y}: ${d3.format(formats.y.long)(d[names.y])}`
+        ];
+
+        if (names.radius && names.radius !== null) {
+            content.push(`${names.radius}: ${d3.format(formats.radius.long)(d[names.radius])}`);
+        }
+
+        return content;
+    }
+
+    _handlePointerEnter(e, d) {        
         this._dots.attr("opacity", dot => dot === d ? 0.75 : 0.5);
+        this._infoLayer.openTooltip(e, this._getTooltipContent(d));
+    }
+
+    _handlePointerMove(e, d) {
+        this._infoLayer.moveTooltip(e);
     }
 
     _handlePointerLeave(e, d) {
         this._dots.attr("opacity", 0.5);
+        this._infoLayer.hideTooltip();
     }
 
     _handleClick(e, d) {
+        const names = this.chartData.fieldNames;
 
+        if (this._focus !== d) {
+            this._focus = d;
+            this._infoLayer.openAnnotation(
+                this._getTooltipContent(d),
+                this.x(d[names.x]), this.y(d[names.y]), this.r(d[names.radius])
+            );
+        }
+        else {
+            this._infoLayer.hideAnnotation();
+            this._focus = null;
+        }
+        if (this.onclick) this.onclick(e, d);
     }
 }
