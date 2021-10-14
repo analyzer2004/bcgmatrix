@@ -8,7 +8,6 @@ class ChartData {
     }
 
     get dataset() { return this._dataset; }
-    set dataset(_) { this._transformData(_); }
 
     get extents() { return this._extents; }
     get fieldInfos() { return this._fieldInfos; }
@@ -24,19 +23,22 @@ class ChartData {
                 return [v1, v2];
             }
 
-        this._dataset = source.map(d => {
-            const row = {
-                name: d[names.name],
-                x: d[names.x],
-                y: d[names.y],
-                r: d[names.radius],
-                flag: ValueFlag.unspecified
-            };
-            this.extents.x = test(row.x, this.extents.x);
-            this.extents.y = test(row.y, this.extents.y);
-            this.extents.radius = test(row.r, this.extents.radius);
-            return row;
-        }).sort((a, b) => a.r - b.r);
+        this._dataset = source
+            .map(d => {
+                const row = {
+                    name: d[names.name],
+                    x: d[names.x],
+                    y: d[names.y],
+                    r: d[names.radius],
+                    flag: ValueFlag.unspecified
+                };
+                this.extents.x = test(row.x, this.extents.x);
+                this.extents.y = test(row.y, this.extents.y);
+                this.extents.radius = test(row.r, this.extents.radius);
+                return row;
+            })
+            .filter(d => d.x || d.y || d.r)
+            .sort((a, b) => a.r - b.r);
 
         const len = this._dataset.length;
         if (names.radius && names.radius !== "") {
@@ -82,7 +84,7 @@ class FieldInfo {
     }
 
     get label() { return this._label ?? this.name; }
-    set label(_) { this._label = _; }    
+    set label(_) { this._label = _; }
 }
 
 class NumberFormat {

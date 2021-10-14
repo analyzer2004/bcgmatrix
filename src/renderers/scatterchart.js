@@ -179,18 +179,17 @@ class ScatterChart extends BaseRenderer {
     }
 
     _getTooltipContent(d) {
-        const
-            names = this.chartData.fieldNames,
-            formats = this.chartData.fieldFormats;
+        const fields = this.chartData.fieldInfos;
 
         const content = [
             `${d.name}`,
-            `${names.x}: ${d3.format(formats.x.long)(d.x)}`,
-            `${names.y}: ${d3.format(formats.y.long)(d.y)}`
+            `${fields.x.label}: ${d3.format(fields.x.format.long)(d.x)}`,
+            `${fields.y.label}: ${d3.format(fields.y.format.long)(d.y)}`
         ];
 
-        if (names.radius && names.radius !== null) {
-            content.push(`${names.radius}: ${d3.format(formats.radius.long)(d.r)}`);
+        const radius = fields.radius;
+        if (radius.name && radius.name !== "") {
+            content.push(`${radius.label}: ${d3.format(radius.format.long)(d.r)}`);
         }
 
         return content;
@@ -199,7 +198,7 @@ class ScatterChart extends BaseRenderer {
     _handlePointerEnter(e, d) {
         this._dots.select("circle").attr("opacity", dot => dot === d ? 0.75 : 0.5);
         this._infoLayer.openTooltip(e, this._getTooltipContent(d));
-        if (this.onhover) this.onhover(d);
+        if (this.onhover) this.onhover(e, d);
     }
 
     _handlePointerMove(e, d) {
@@ -209,7 +208,7 @@ class ScatterChart extends BaseRenderer {
     _handlePointerLeave(e, d) {
         this._dots.select("circle").attr("opacity", 0.5);
         this._infoLayer.hideTooltip();
-        if (this.onleave) this.onleave(d);
+        if (this.onleave) this.onleave(e, d);
     }
 
     _handleClick(e, d) {
