@@ -131,6 +131,22 @@ export default class BCGMatrix {
         return arguments.length ? (this._dataset = _, this) : this._dataset;
     }
 
+    events(_) {
+        if (arguments.length) {
+            this._coordinator.scatterChart.onclick = _.onclick;
+            this._coordinator.scatterChart.onhover = _.onhover;
+            this._coordinator.scatterChart.onleave = _.onleave;
+            return this;
+        }
+        else {
+            return {
+                onclick: this._coordinator.scatterChart.onclick,
+                onhover: this._coordinator.scatterChart.onhover,
+                oncancel: this._coordinator.scatterChart.oncancel
+            }
+        }
+    }
+
     render() {
         const options = this._options;
 
@@ -143,8 +159,8 @@ export default class BCGMatrix {
         this._scales.initialize();
 
         this._coordinator.highlight = Highlight[options.highlightScope];
-        this._coordinator.showTooltip = options.showTooltip;
-        this._coordinator.showAnnotation = options.showAnnotation;
+        this._coordinator.scatterChart.infoLayer.showTooltip = options.showTooltip;
+        this._coordinator.scatterChart.infoLayer.showAnnotation = options.showAnnotation;
         this._coordinator.render();
     }
 }

@@ -1,9 +1,9 @@
 import { InfoBox, Annotation } from "./infobox.js"
 
 export default class InfoLayer {
-    constructor(svg, font) {
-        this._svg = svg;
-        this._font = font;
+    constructor() {
+        this._svg = null;
+        this._font = null;
 
         this._tooltip = null;
         this._annotation = null;
@@ -14,7 +14,10 @@ export default class InfoLayer {
         this.assignDelegates = null;        
     }
 
-    initialize() {
+    initialize(svg, font) {
+        this._svg = svg;
+        this._font = font;
+
         if (this.showAnnotation) {
             const font = this._font.clone().family("Sans-serif").size("11px").weight("bold");
             this._annotation = new Annotation(this._svg, font, "none");

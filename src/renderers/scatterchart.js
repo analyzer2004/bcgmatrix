@@ -7,15 +7,13 @@ class ScatterChart extends BaseRenderer {
         super(coordinator);
 
         this._dots = null;
-        this._xLevel = this.scales.xDefault;
-        this._yLevel = this.scales.yDefault;
+        this._xLevel = null;
+        this._yLevel = null;
 
         this._focus = null;
-        this._infoLayer = new InfoLayer(this.svg, this.font);
+        this._infoLayer = new InfoLayer();
 
         this.highlight = Highlight.none;
-        this.showTooltip = true;
-        this.showAnnotation = true;
 
         this.onhover = null;
         this.onleave = null;
@@ -41,9 +39,11 @@ class ScatterChart extends BaseRenderer {
         }
     }
     get formats() { return this.chartData.fieldFormats; }
-
+    get infoLayer() { return this._infoLayer; }
 
     render() {
+        this._xLevel = this.scales.xDefault;
+        this._yLevel = this.scales.yDefault;
         this._renderXAxis();
         this._renderYAxis();
         this._renderDots();
@@ -71,9 +71,7 @@ class ScatterChart extends BaseRenderer {
                 return { left, top };
             }
         }
-        this._infoLayer.showTooltip = this.showTooltip;
-        this._infoLayer.showAnnotation = this.showAnnotation;
-        this._infoLayer.initialize();
+        this._infoLayer.initialize(this.svg, this.font);
     }
 
     _renderXAxis() {
@@ -201,6 +199,7 @@ class ScatterChart extends BaseRenderer {
     _handlePointerEnter(e, d) {
         this._dots.select("circle").attr("opacity", dot => dot === d ? 0.75 : 0.5);
         this._infoLayer.openTooltip(e, this._getTooltipContent(d));
+        if (this.onhover) this.onhover(d);
     }
 
     _handlePointerMove(e, d) {
@@ -210,6 +209,7 @@ class ScatterChart extends BaseRenderer {
     _handlePointerLeave(e, d) {
         this._dots.select("circle").attr("opacity", 0.5);
         this._infoLayer.hideTooltip();
+        if (this.onleave) this.onleave(d);
     }
 
     _handleClick(e, d) {
