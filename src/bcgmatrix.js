@@ -158,6 +158,8 @@ export default class BCGMatrix {
 
         this._scales.dotRadius = options.dotRadius;
         this._scales.bubbleRadiusRange = options.bubbleRadiusRange;
+        this._scales.xExponent = options.xExponent;
+        this._scales.yExponent = options.yExponent;
         this._scales.xScaleType = ScaleType[options.xScaleType];
         this._scales.yScaleType = ScaleType[options.yScaleType];
         this._scales.initialize();
@@ -181,9 +183,11 @@ class BCGMatrixOptions {
         this.showTooltip = true;
         this.showAnnotation = true;
         this.xInitValue = null;
-        this.xScaleType = "linear"; // "linear", "log", "sqrt"
-        this.yScaleType = "linear"; // "linear", "log", "sqrt"
+        this.xExponent = 1;
+        this.xScaleType = "linear"; // "linear", "log", "sqrt"        
         this.yInitValue = null;
+        this.yExponent = 1;
+        this.yScaleType = "linear"; // "linear", "log", "sqrt"                
         this.showTicksOnRules = true;
     }
 }

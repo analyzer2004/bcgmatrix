@@ -3,6 +3,8 @@ class Scales {
         this._chart = chart;
         this.xScaleType = ScaleType.linear;
         this.yScaleType = ScaleType.linear;
+        this.xExponent = 1;
+        this.yExponent = 1;
 
         this._x = null;
         this._y = null;
@@ -34,8 +36,8 @@ class Scales {
             measures = this._chart.measures,
             margin = measures.margin;
 
-        this._x = ScaleType.getScale(this.xScaleType, data.extents.x, [margin.left, measures.width - margin.right], true);
-        this._y = ScaleType.getScale(this.yScaleType, data.extents.y, [measures.height - margin.bottom, margin.top], true);        
+        this._x = ScaleType.getScale(this.xScaleType, data.extents.x, [margin.left, measures.width - margin.right], true, this.xExponent);
+        this._y = ScaleType.getScale(this.yScaleType, data.extents.y, [measures.height - margin.bottom, margin.top], true, this.yExponent);
         this._radius = this.isBubble
             ? d3.scaleLinear().domain(data.extents.radius).range(this.bubbleRadiusRange)
             : _ => this.dotRadius;
@@ -54,10 +56,17 @@ class ScaleType {
     static get linear() { return 0; }
     static get log() { return 1; }
     static get sqrt() { return 2; }
-    static getScale(type, domain, range, nice) {
-        const names = ["Linear", "Log", "Sqrt"];
+    static get pow() { return 3; }
+    static getScale(type, domain, range, nice, exponent) {
+        const names = ["Linear", "Log", "Sqrt", "Pow"];
         let scale = d3[`scale${names[type]}`]();
         if (!scale) scale = d3.scaleLinear();        
+        if (type === ScaleType.log && domain.length === 2) {
+            if (domain[0] === 0) domain[0] = 1;
+        }
+        else if (type === ScaleType.pow) {
+            scale.exponent(exponent);
+        }
         scale.domain(domain).range(range);
         return nice ? scale.nice() : scale;
     }
