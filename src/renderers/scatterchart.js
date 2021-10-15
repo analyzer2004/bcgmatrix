@@ -198,8 +198,10 @@ class ScatterChart extends BaseRenderer {
 
     _handlePointerEnter(e, d) {
         this._dots.select("circle").attr("opacity", dot => dot === d ? 0.75 : 0.5);
-        this._infoLayer.openTooltip(e, this._getTooltipContent(d));
-        if (this.onhover) this.onhover(e, d);
+
+        const content = this._getTooltipContent(d);
+        this._infoLayer.openTooltip(e, content);
+        if (this.onhover) this.onhover(e, d, content);
     }
 
     _handlePointerMove(e, d) {
