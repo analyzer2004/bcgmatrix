@@ -79,11 +79,33 @@ class ScatterChart extends BaseRenderer {
         this._infoLayer.initialize(this.svg, this.font);
     }
 
+    _rotateTicks(g, isXAxis) {
+        const boxes = g.selectAll(".tick").nodes().map(node => node.getBoundingClientRect());
+        let overlapped = false;
+        for (let i = 0; i < boxes.length - 1; i++) {
+            const c = boxes[i], n = boxes[i + 1];
+            overlapped = isXAxis ? c.right > n.left : c.top < n.bottom;
+            if (overlapped) break;
+        }
+
+        if (overlapped) {
+            const texts = g.selectAll("text");
+            if (isXAxis) {
+                texts.attr("text-anchor", "end")
+                    .attr("transform", "translate(-10,0) rotate(-45)");
+            }
+            else {
+                texts.attr("opacity", (_, i) => i % 2 === 0 ? 1 : 0);
+            }
+        }
+    }
+
     _renderXAxis() {
         const xr = this.x.range();
 
         this.svg.append("g")
             .call(this._xAxis.bind(this))
+            .call(g => this._rotateTicks(g, true))
             .call(g => g.append("text")
                 .attr("transform", `translate(0,${this.measures.charBox.height + this.measures.tickSpace})`)
                 .attr("x", xr[0] + (xr[1] - xr[0]) / 2)
@@ -101,6 +123,7 @@ class ScatterChart extends BaseRenderer {
 
         this.svg.append("g")
             .call(this._yAxis.bind(this))
+            .call(g => this._rotateTicks(g))
             .call(g => g.append("text")
                 .attr("transform", `translate(-${this.margin.left},${y}) rotate(-90,0,0)`)
                 .attr("text-anchor", "middle")
@@ -109,6 +132,34 @@ class ScatterChart extends BaseRenderer {
                 .attr("fill", this.coordinator.colors.text)
                 .text(`${this.chartData.fieldInfos.y.label} →`)
             );
+    }
+
+    _xAxis(g) {
+        this.font.applyTo(g);
+        return g
+            .attr("transform", `translate(0,${this.chartHeight - this.margin.bottom})`)
+            .call(g => {
+                const axis = this._getAxis(d3.axisBottom, this.x, this.formats.x.short);
+                if (this.scales.xScaleType === ScaleType.log) axis.ticks(5);
+                axis(g);
+            });
+    }
+
+    _yAxis(g) {
+        this.font.applyTo(g);
+        return g
+            .attr("transform", `translate(${this.margin.left},0)`)
+            .call(g => {
+                const axis = this._getAxis(d3.axisLeft, this.y, this.formats.y.short);
+                if (this.scales.yScaleType === ScaleType.log) axis.ticks(5);
+                axis(g);
+            });
+    }
+
+    _getAxis(axis, scale, format) {
+        const a = axis(scale);
+        if (format && format !== null) a.tickFormat(d => d3.format(format)(d));
+        return a;
     }
 
     _renderDots() {
@@ -144,34 +195,6 @@ class ScatterChart extends BaseRenderer {
             .attr("alignment-baseline", "middle")
             .attr("fill", this.coordinator.colors.text)
             .text(d => d.name);
-    }
-
-    _xAxis(g) {
-        this.font.applyTo(g);
-        return g
-            .attr("transform", `translate(0,${this.chartHeight - this.margin.bottom})`)
-            .call(g => {
-                const axis = this._getAxis(d3.axisBottom, this.x, this.formats.x.short);
-                if (this.scales.xScaleType === ScaleType.log) axis.ticks(5);
-                axis(g);
-            });
-    }
-
-    _yAxis(g) {
-        this.font.applyTo(g);
-        return g
-            .attr("transform", `translate(${this.margin.left},0)`)
-            .call(g => {
-                const axis = this._getAxis(d3.axisLeft, this.y, this.formats.y.short);
-                if (this.scales.yScaleType === ScaleType.log) axis.ticks(5);
-                axis(g);
-            });
-    }
-
-    _getAxis(axis, scale, format) {        
-        const a = axis(scale);                
-        if (format && format !== null) a.tickFormat(d => d3.format(format)(d));
-        return a;
     }
 
     _getColor(d) {
