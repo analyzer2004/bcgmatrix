@@ -43,6 +43,12 @@ export default class Coordinator {
         this._renderRules();
     }
 
+    dispose() {
+        if (this._ruleX) this._ruleX.dispose();
+        if (this._ruleY) this._ruleY.dispose();
+        if (this._grip) this._grip.dispose();
+    }
+
     _validateInitValues() {
         const
             x = this.chart.scales.x,

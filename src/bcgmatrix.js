@@ -171,6 +171,12 @@ export default class BCGMatrix {
         this._coordinator.scatterChart.infoLayer.showTooltip = options.showTooltip;
         this._coordinator.scatterChart.infoLayer.showAnnotation = options.showAnnotation;
         this._coordinator.render();
+
+        return this;
+    }
+
+    dispose() {
+        if (this._coordinator) this._coordinator.dispose();
     }
 }
 
@@ -184,10 +190,10 @@ class BCGMatrixOptions {
         this.showAnnotation = true;
         this.xInitValue = null;
         this.xExponent = 1;
-        this.xScaleType = "linear"; // "linear", "log", "sqrt"        
+        this.xScaleType = "linear"; // "linear", "log", "sqrt", "pow"
         this.yInitValue = null;
         this.yExponent = 1;
-        this.yScaleType = "linear"; // "linear", "log", "sqrt"                
+        this.yScaleType = "linear"; // "linear", "log", "sqrt", "pow"
         this.showTicksOnRules = true;
     }
 }

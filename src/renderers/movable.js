@@ -9,6 +9,9 @@ export default class Movable extends BaseRenderer {
         this.onmove = null;
         this.onreset = null;
         this.onchange = null;
+
+        this.handlePointerMove = this.handlePointerMove.bind(this);
+        this.handlePointerUp = this.handlePointerUp.bind(this);
     }
 
     get xRange() { return this.scales.x.range(); }
@@ -22,10 +25,15 @@ export default class Movable extends BaseRenderer {
                 elem.on("dblclick", e => this.onreset(e));
             }
         }
-        document.addEventListener("pointermove", this.handlePointerMove.bind(this));
-        document.addEventListener("pointerup", this.handlePointerUp.bind(this));
+        document.addEventListener("pointermove", this.handlePointerMove);
+        document.addEventListener("pointerup", this.handlePointerUp);
         this.transform();
         return this;
+    }
+
+    dispose() {
+        document.removeEventListener("pointermove", this.handlePointerMove);
+        document.removeEventListener("pointerup", this.handlePointerUp);
     }
 
     invertX(x) { return this.scales.x.invert(x); }
