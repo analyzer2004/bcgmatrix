@@ -10,6 +10,7 @@ export default class Cell {
         this._g = null;
         this._rect = null;
         this._label = null;
+        this.onclick = null;
     }
 
     get x() { return this._x; }
@@ -60,7 +61,8 @@ export default class Cell {
                         .attr("dy", "1em")
                         .text(this._zone.caption)
                     );
-            });
+            })
+            .on("click", e => { if (this.onclick) this.onclick(e); })
 
         this._transform();
         return this;

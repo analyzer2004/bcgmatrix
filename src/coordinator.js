@@ -88,6 +88,9 @@ export default class Coordinator {
         this._stars = new Cell(this._svg, xc, yr[1], w - xc, yc - yr[1], zones.stars).render();
         this._dogs = new Cell(this._svg, xr[0], yc, xc - xr[0], h - yc, zones.dogs).render();
         this._cows = new Cell(this._svg, xc, yc, w - xc, h - yc, zones.cows).render();
+        this._questionMarks.onclick = this._stars.onclick = this._dogs.onclick = this._cows.onclick = e => {
+            this._scatterChart.hideAnnotation();
+        };
     }
 
     _renderScatterChart() {

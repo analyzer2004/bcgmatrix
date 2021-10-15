@@ -52,6 +52,11 @@ class ScatterChart extends BaseRenderer {
         return this;
     }
 
+    hideAnnotation() {
+        this._infoLayer.hideAnnotation();
+        this._focus = null;
+    }
+
     _initInfoLayer() {
         this._infoLayer.assignDelegates = (obj, font) => {
             obj.getBBox = s => this.measures.getBBox(s, font);
@@ -223,8 +228,7 @@ class ScatterChart extends BaseRenderer {
             );
         }
         else {
-            this._infoLayer.hideAnnotation();
-            this._focus = null;
+            this.hideAnnotation();
         }
         if (this.onclick) this.onclick(e, d);
     }
