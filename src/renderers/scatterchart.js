@@ -94,8 +94,13 @@ class ScatterChart extends BaseRenderer {
                 texts.attr("text-anchor", "end")
                     .attr("transform", "translate(-10,0) rotate(-45)");
             }
-            else {
-                texts.attr("opacity", (_, i) => i % 2 === 0 ? 1 : 0);
+            else {                
+                texts.attr("opacity", (_, i) => {
+                    const c = boxes[i], n = i < boxes.length ? boxes[i + 1] : null;
+                    return c && n
+                        ? n.bottom > c.top && i % 2 === 1 ? 0 : 1
+                        : 1;
+                });
             }
         }
     }

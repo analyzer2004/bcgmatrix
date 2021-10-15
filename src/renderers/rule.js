@@ -56,22 +56,51 @@ export default class Rule extends Movable {
                 if (this.showTicks) {
                     g.selectAll(".tick")
                         .data(ticks.slice(1, ticks.length - 1))
-                        .join("text")
+                        .join("g")
                         .attr("class", "tick")
-                        .attr("text-anchor", "middle")
-                        .attr("dy", "0.32em")
-                        .attr("stroke", "white")
-                        .attr("stroke-width", 2)
-                        .attr(this._isVertical ? "y" : "x", d => d)
-                        .text(d => d3.format(format.short)(scale.invert(d)))
-                        .clone()
-                        .attr("stroke", "none")
-                        .attr("stroke-width", 0)
-                        .attr("fill", "#aaa")
-                        .text(d => d3.format(format.short)(scale.invert(d)));
+                        .attr("transform", d => `translate(${this._isVertical ? 0 : d},${this._isVertical ? d: 0})`)
+                        .call(g => {
+                            g.append("text").attr("text-anchor", "middle")
+                                .attr("dy", "0.32em")
+                                .attr("stroke", "white")
+                                .attr("stroke-width", 2)                                
+                                .text(d => d3.format(format.short)(scale.invert(d)))
+                                .clone()
+                                .attr("stroke", "none")
+                                .attr("stroke-width", 0)
+                                .attr("fill", "#aaa")
+                                .text(d => d3.format(format.short)(scale.invert(d)));
+                        });
+                    this._rotateTicks(g);
                 }
             });
         return super.render(this._g);
+    }
+
+    _rotateTicks(g) {
+        const ticks = g.selectAll(".tick");
+        const boxes = ticks.nodes().map(node => node.getBoundingClientRect());
+        let overlapped = false;
+        for (let i = 0; i < boxes.length - 1; i++) {
+            const c = boxes[i], n = boxes[i + 1];
+            overlapped = this._isVertical ? c.top < n.bottom : c.right > n.left;
+            if (overlapped) break;
+        }
+
+        if (overlapped) {
+            if (this._isVertical) {
+                ticks.attr("opacity", (_, i) => {
+                    const c = boxes[i], n = i < boxes.length ? boxes[i + 1] : null;
+                    return c && n
+                        ? n.bottom > c.top && i % 2 === 1 ? 0 : 1
+                        : 1;
+                });
+            }
+            else {
+                ticks.selectAll("text")
+                    .attr("transform", "rotate(-45)");
+            }
+        }
     }
 
     move(p) {
