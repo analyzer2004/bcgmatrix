@@ -1,4 +1,4 @@
-export default class Scales {
+class Scales {
     constructor(chart) {
         this._chart = chart;
         this.xScaleType = ScaleType.linear;
@@ -62,3 +62,5 @@ class ScaleType {
         return nice ? scale.nice() : scale;
     }
 }
+
+export { Scales, ScaleType };

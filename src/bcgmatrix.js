@@ -2,7 +2,7 @@ import { ChartData } from "./chartdata.js";
 import Coordinator from "./coordinator.js";
 import { Measures } from "./measures.js";
 import { Highlight } from "./renderers/scatterchart.js";
-import Scales from "./scales.js";
+import { Scales, ScaleType } from "./scales.js";
 import Zones from "./zones.js";
 
 export default class BCGMatrix {
@@ -158,6 +158,8 @@ export default class BCGMatrix {
 
         this._scales.dotRadius = options.dotRadius;
         this._scales.bubbleRadiusRange = options.bubbleRadiusRange;
+        this._scales.xScaleType = ScaleType[options.xScaleType];
+        this._scales.yScaleType = ScaleType[options.yScaleType];
         this._scales.initialize();
 
         this._coordinator.highlight = Highlight[options.highlightScope];
@@ -179,6 +181,8 @@ class BCGMatrixOptions {
         this.showTooltip = true;
         this.showAnnotation = true;
         this.xInitValue = null;
+        this.xScaleType = "linear"; // "linear", "log", "sqrt"
+        this.yScaleType = "linear"; // "linear", "log", "sqrt"
         this.yInitValue = null;
         this.showTicksOnRules = true;
     }
