@@ -14,8 +14,8 @@
                         dotRadius: 5,
                         bubbleRadiusRange: [5, 40],
                         highlightScope: "topBottom",
-                        xInitValue: 4000000,
-                        yInitValue: 0.4
+                        xScaleType: "pow",
+
                     })
                     .data(data.filter(d => d.Year === 2021))
                     .columns({

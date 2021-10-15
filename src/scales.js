@@ -42,8 +42,11 @@ class Scales {
             ? d3.scaleLinear().domain(data.extents.radius).range(this.bubbleRadiusRange)
             : _ => this.dotRadius;
 
-        this._xTicks = this._x.ticks().map(d => this._x(d));
-        this._yTicks = this._y.ticks().map(d => this._y(d));
+        const
+            xn = this.xScaleType === ScaleType.log ? 5 : null,
+            yn = this.yScaleType === ScaleType.log ? 5 : null;
+        this._xTicks = this._x.ticks(xn).map(d => this._x(d));
+        this._yTicks = this._y.ticks(yn).map(d => this._y(d));
     }
 
     _calcMidPoint(scale) {
@@ -62,7 +65,7 @@ class ScaleType {
         let scale = d3[`scale${names[type]}`]();
         if (!scale) scale = d3.scaleLinear();        
         if (type === ScaleType.log && domain.length === 2) {
-            if (domain[0] === 0) domain[0] = 1;
+            if (domain[0] === 0) domain[0] = 1;            
         }
         else if (type === ScaleType.pow) {
             scale.exponent(exponent);

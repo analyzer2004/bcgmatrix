@@ -1,5 +1,6 @@
 ﻿import BaseRenderer from "./baserenderer.js";
 import InfoLayer from "./infolayer.js";
+import { ScaleType } from "../scales.js";
 import { ValueFlag } from "../chartdata.js";
 
 class ScatterChart extends BaseRenderer {
@@ -149,18 +150,26 @@ class ScatterChart extends BaseRenderer {
         this.font.applyTo(g);
         return g
             .attr("transform", `translate(0,${this.chartHeight - this.margin.bottom})`)
-            .call(this._getAxis(d3.axisBottom, this.x, this.formats.x.short));
+            .call(g => {
+                const axis = this._getAxis(d3.axisBottom, this.x, this.formats.x.short);
+                if (this.scales.xScaleType === ScaleType.log) axis.ticks(5);
+                axis(g);
+            });
     }
 
     _yAxis(g) {
         this.font.applyTo(g);
         return g
             .attr("transform", `translate(${this.margin.left},0)`)
-            .call(this._getAxis(d3.axisLeft, this.y, this.formats.y.short));
+            .call(g => {
+                const axis = this._getAxis(d3.axisLeft, this.y, this.formats.y.short);
+                if (this.scales.yScaleType === ScaleType.log) axis.ticks(5);
+                axis(g);
+            });
     }
 
-    _getAxis(axis, scale, format) {
-        const a = axis(scale);
+    _getAxis(axis, scale, format) {        
+        const a = axis(scale);                
         if (format && format !== null) a.tickFormat(d => d3.format(format)(d));
         return a;
     }
