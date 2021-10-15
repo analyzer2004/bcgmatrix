@@ -34,12 +34,31 @@ export default class Coordinator {
     get scatterChart() { return this._scatterChart; }
 
     render() {
+        this._validateInitValues();
         this._renderSvg();
         this._renderBackground();
 
         this._renderLabels();
         this._renderScatterChart();
         this._renderRules();
+    }
+
+    _validateInitValues() {
+        const
+            x = this.chart.scales.x,
+            y = this.chart.scales.y,
+            validate = (scale, value, defaultValue) => {
+                if (value) {
+                    const domain = scale.domain();
+                    return value >= domain[0] && value <= domain[1] ? value : defaultValue;
+                }
+                else {
+                    return defaultValue;
+                }
+            }
+
+        this.xInitValue = validate(x, this.xInitValue, this.chart.scales.xDefault);
+        this.yInitValue = validate(y, this.yInitValue, this.chart.scales.yDefault);
     }
 
     _renderSvg() {
@@ -176,8 +195,8 @@ export default class Coordinator {
             y = this.chart.scales.y,
             xr = x.range(),
             yr = y.range(),
-            xc = this.xInitValue ? x(this.xInitValue) : x(this.chart.scales.xDefault),
-            yc = this.yInitValue ? y(this.yInitValue) : y(this.chart.scales.yDefault);
+            xc = x(this.xInitValue),
+            yc = y(this.yInitValue);
         return { x, y, xr, yr, xc, yc };
     }
 
