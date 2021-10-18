@@ -25,13 +25,13 @@ class ChartData {
 
         this._dataset = source
             .map(d => {
-                const row = {
-                    name: d[names.name],
-                    x: d[names.x],
-                    y: d[names.y],
-                    r: d[names.radius],
-                    flag: ValueFlag.unspecified
-                };
+                const row = new Dot(
+                    d[names.name],
+                    d[names.x],
+                    d[names.y],
+                    d[names.radius],
+                    ValueFlag.unspecified
+                );
                 this.extents.x = test(row.x, this.extents.x);
                 this.extents.y = test(row.y, this.extents.y);
                 this.extents.radius = test(row.r, this.extents.radius);
@@ -74,6 +74,15 @@ class FieldInfos {
             radius: this.radius.format
         }
     }
+
+    copyFrom(source) {
+        if (source) {
+            if (source.name) this.name.copyFrom(source.name);
+            if (source.x) this.x.copyFrom(source.x);
+            if (source.y) this.y.copyFrom(source.y);
+            if (source.radius) this.radius.copyFrom(source.radius);
+        }
+    }
 }
 
 class FieldInfo {
@@ -85,12 +94,27 @@ class FieldInfo {
 
     get label() { return this._label ?? this.name; }
     set label(_) { this._label = _; }
+
+    copyFrom(source) {
+        if (source) {
+            if (source.name) this.name = source.name;
+            if (source.label) this.label = source.label;
+            if (source.format) this.format.copyFrom(source.format);
+        }
+    }
 }
 
 class NumberFormat {
     constructor() {
         this.short = ",.2s";
         this.long = ",.2f";
+    }
+
+    copyFrom(source) {
+        if (source) {
+            if (source.short) this.short = source.short;
+            if (source.long) this.long = source.long;
+        }
     }
 }
 
@@ -108,6 +132,16 @@ class ValueFlag {
     static get max() { return 2; }
     static get bottomGroup() { return 4; }
     static get topGroup() { return 8; }
+}
+
+class Dot {
+    constructor(name, x, y, r, flag) {
+        this.name = name;
+        this.x = x;
+        this.y = y;
+        this.r = r;
+        this.flag = flag
+    }
 }
 
 export { ChartData, ValueFlag };

@@ -23,7 +23,6 @@ export default class BCGMatrix {
     get chartData() { return this._chartData; }
     get measures() { return this._measures; }
     get scales() { return this._scales; }
-    get zones() { return this._zones; }
 
     size(_) {
         if (arguments.length) {
@@ -40,91 +39,20 @@ export default class BCGMatrix {
         return arguments.length ? (this._options = Object.assign(this._options, _), this) : this._options;
     }
 
+    zones(_) {
+        return arguments.length ? (this._zones.copyFrom(_), this) : this._zones;
+    }
+
     colors(_) {
-        if (arguments.length) {
-            if (_.questionMarks) this._zones.questionMarks.color = _.questionMarks;
-            if (_.dogs) this._zones.dogs.color = _.dogs;
-            if (_.stars) this._zones.stars.color = _.stars;
-            if (_.cows) this._zones.cows.color = _.cows;
-            if (_.rule) this._coordinator.colors.rule = _.rule;
-            if (_.text) this._coordinator.colors.text = _.text;
-            if (_.ticks) this._coordinator.colors.ticks = _.ticks;
-            if (_.background) this._coordinator.colors.background = _.background;
-            return this;
-        }
-        else {
-            return {
-                questionMarks: this._zones.questionMarks.color,
-                dogs: this._zones.dogs.color,
-                stars: this._zones.stars.color,
-                cows: this._zones.cows.color,
-                rule: this._coordinator.colors.rule,
-                text: this._coordinator.colors.text,
-                ticks: this._coordinator.colors.ticks,
-                background: this._coordinator.colors.background
-            };
-        }
-    }
-
-    icons(_) {
-        if (arguments.length) {
-            if (_.questionMarks) this._zones.questionMarks.icon = _.questionMarks;
-            if (_.dogs) this._zones.dogs.icon = _.dogs;
-            if (_.stars) this._zones.stars.icon = _.stars;
-            if (_.cows) this._zones.cows.icon = _.cows;
-            return this;
-        }
-        else {
-            return {
-                questionMarks: this._zones.questionMarks.icon,
-                dogs: this._zones.dogs.icon,
-                stars: this._zones.stars.icon,
-                cows: this._zones.cows.icon,
-            };
-        }
-    }
-
-    labels(_) {
-        if (arguments.length) {
-            if (_.questionMarks) this._zones.questionMarks.caption = _.questionMarks;
-            if (_.dogs) this._zones.dogs.caption = _.dogs;
-            if (_.stars) this._zones.stars.caption = _.stars;
-            if (_.cows) this._zones.cows.caption = _.cows;
-            return this;
-        }
-        else {
-            return {
-                questionMarks: this._zones.questionMarks.caption,
-                dogs: this._zones.dogs.caption,
-                stars: this._zones.stars.caption,
-                cows: this._zones.cows.caption,
-            };
-        }
+        return arguments.length ? (this._coordinator.colors.copyFrom(_), this) : this._zones;
     }
 
     columns(_) {
-        if (arguments.length) {
-            const fields = this._chartData.fieldInfos;
-            fields.name = Object.assign(fields.name, _.name);
-            fields.x = Object.assign(fields.x, _.x);
-            fields.y = Object.assign(fields.y, _.y);
-            fields.radius = Object.assign(fields.radius, _.radius);
-            return this;
-        }
-        else {
-            return this._fieldNames;
-        }
+        return arguments.length ? (this._chartData.fieldInfos.copyFrom(_), this) : this._chartData.fieldInfos;
     }
 
     font(_) {
-        if (arguments.length) {
-            this.measures.font.family(_.family);
-            this.measures.font.size(_.size);
-            return this;
-        }
-        else {
-            return this.measures.font;
-        }
+        return arguments.length ? (this._measures.font.copyFrom(_), this) : this._measures.font;
     }
 
     data(_) {

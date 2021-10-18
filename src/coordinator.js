@@ -84,7 +84,7 @@ export default class Coordinator {
 
     _renderLabels() {
         const
-            zones = this.chart.zones,
+            zones = this.chart.zones(),
             { x, y, xr, yr, xc, yc } = this._getScales(),
             m = this.chart.measures.margin,
             w = this.width - m.right,
@@ -226,5 +226,14 @@ class Colors {
         this.text = "black";
         this.ticks = "black";
         this.background = "none";
+    }
+
+    copyFrom(source) {
+        if (source) {
+            if (source.rule) this.rule = source.rule;
+            if (source.text) this.text = source.text;
+            if (source.ticks) this.ticks = source.ticks;
+            if (source.background) this.background = source.background;
+        }
     }
 }

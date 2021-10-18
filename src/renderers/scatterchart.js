@@ -203,7 +203,7 @@ class ScatterChart extends BaseRenderer {
     }
 
     _getColor(d) {
-        const zones = this.chart.zones;
+        const zones = this.chart.zones();
 
         if (d.x < this._xLevel) {
             return d.y < this._yLevel ? zones.dogs.color : zones.questionMarks.color;

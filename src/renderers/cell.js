@@ -5,6 +5,7 @@ export default class Cell {
         this._y = y;
         this._width = width;
         this._height = height;
+        this._color = null;
         this._zone = zone;
 
         this._g = null;

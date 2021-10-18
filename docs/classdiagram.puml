@@ -1,0 +1,437 @@
+@startuml
+
+namespace bcgmatrix.js {
+	class BCGMatrix {
+		-_dataset: Object[]
+		-_options: BCGMatrixOptions
+		-_coordinator: Coordinator
+		+{readonly} container: SVGElement
+		+{readonly} chartData: ChartData
+		+{readonly} measures: Measures
+		+{readonly} scales: Scales
+		+{readonly} zones: Zones
+		+BCGMatrix(container: SVGElement)
+		+{chainable} size([width: Number, height: Number]): BCGMatrix | Size
+		+{chainable} options(options: BCGMatrixOptions): BCGMatrix | BCGMatrixOptions
+		+{chainable} zones(zones: Zones): BCGMatrix | Zones
+		+{chainable} colors(colors: Colors): BCGMatrix | Colors		
+		+{chainable} columns(columns: FieldInfos): BCGMatrix | FieldInfos
+		+{chainable} font(font: Font): BCGMatrix | Font
+		+{chainable} events(events: Events): BCGMatrix | Events
+		+render(): BCGMatrix
+		+dispose()
+	}
+
+	BCGMatrix --> BCGMatrixOptions : _options
+	class BCGMatrixOptions {
+        +dotRadius: float = 5
+        +bubbleRadiusRange: [float, float] = [5, 30]
+        +highlightScope: String = "none"
+        +numberOfTopBottom: int = 5
+        +showTooltip: bool = true
+        +showAnnotation: bool = true
+        +xInitValue: float
+        +xExponent: float = 1
+        +xScaleType: String = "linear"
+        +yInitValue: float
+        +yExponent: float = 1
+        +yScaleType: String = "linear"
+        +showTicksOnRules: bool = true
+	}
+}
+
+bcgmatrix.js.BCGMatrix --> chartdata.js.ChartData : chartData
+bcgmatrix.js.BCGMatrix --> measures.js.Measures : measures
+bcgmatrix.js.BCGMatrix --> scales.js.Scales : scales
+zones.js.Zones <-- bcgmatrix.js.BCGMatrix : zones
+coordinator.js.Coordinator <-- bcgmatrix.js.BCGMatrix : _coordinator
+namespace chartdata.js {
+	class ChartData {		
+		+{readonly} dataset: Point[]
+		+{readonly} fieldInfos: FieldInfos
+		+{readonly} extents: Extents
+		+{readonly} fieldNames: {name: String, x: String, y: String, radius: String}
+		+{readonly} fieldFormats: {x: NumberFormat, y: NumberFormat: radius: NumberFormat}
+		+numOfTopBottom: int = 5
+		+ChartData()
+		+process(source: Object[])
+	}
+
+	ChartData --> FieldInfos: fieldInfos
+	ChartData --> Extents: extents
+	ChartData "1" *-- "*" Point: dataset
+	class FieldInfos {
+		+name: FieldInfo
+		+x: FieldInfo
+		+y: FieldInfo
+		+radius: FieldInfo
+		+{readonly} names: {name: String, x: String, y: String, radius: String}
+		+{readonly} formats: {x: NumberFormat, y: NumberFormat: radius: NumberFormat}
+		+FieldInfo()
+		+copyFrom(source: FieldInfos)
+	}
+
+	FieldInfos --> FieldInfo : name, x, y, radius
+	class FieldInfo {
+		+name: String
+		+label: String
+		+format: NumberFormat
+		+FieldInfo()
+		+copyFrom(source: FieldInfo)
+	}
+
+	FieldInfo --> NumberFormat : format
+	class NumberFormat {
+		+short: Stirng = ",.2s"
+		+long: String = ",.2f"
+		+NumberFormat()
+		+copyFrom(source: NumberFormat)
+	}
+
+	class Point {
+		+name: String
+		+x: float
+		+y: float
+		+r: float
+		+flag: ValueFlag = ValueFlag.unspecified
+		+Point(name: String, x: float, y: float, r: float, flag: ValueFlag)
+	}
+
+	class Extents {
+		+x: [float, float]
+		+y: [float, float]
+		+radius: [float, float]
+	}
+
+	class ValueFlag <<enum>> {
+		unspecified = 0
+		min = 1
+		max = 2
+		bottomGroup = 4
+		topGroup = 8
+	}
+}
+
+namespace measures.js {
+	class Measures {
+		-_chart: bcgmatrix
+		+font: Font
+		+width: float = 1024
+		+height: float = 768
+		+margin: Margin
+		+{readonly} charBox: BBox
+		+{readonly} tickSpace: int = 10
+		+Measures(chart: BCGMatrix)
+		+initialize()
+		+getBBox(str: String, font: Font): BBox
+		+calcStringWidth(str: String, font: Font): float
+		+calcMaxWidth(array: String[], font: Font): float
+		-_createMeasureText()
+		-_calcMargins()
+	}
+
+	Measures --> Margin: margin
+	class Margin {
+		+left: float = 50
+		+top: float = 20
+		+right: float = 20
+		+bottom: float = 20
+		+Margin()
+	}
+}
+
+namespace scales.js {
+	class Scales {
+		-_chart: bcgmatrix		
+		+xScaleType: ScaleType
+		+yScaleType: ScaleType
+		+xExponent: float = 1
+		+yExponent: float = 1
+		+dotRadius: float = 5
+		+bubbleRadiusRange: [float, float] = [5, 30]
+		+{readonly} x: d3.scale
+		+{readonly} y: d3.scale
+		+{readonly} radius: d3.scaleLinear
+		+{readonly} isBubble: bool
+		+{readonly} xTicks: float[]
+		+{readonly} yTicks: float[]
+		+{readonly} xDefault: float
+		+{readonly} yDefault: float
+		+Scale(chart: BCGMatrix)
+		+initialize()
+		+_calcMidPoint(scale: d3.scale): float
+	}
+
+	Scales --> ScaleType : xScaleType, yScaleType
+	class ScaleType {
+		+{static} linear = 0
+		+{static} log = 1
+		+{static} sqrt = 2
+		+{static} pow = 3
+		+{static} getScale(type: int, domain: [float, float], range: [float, float], nice: bool, exponent: float)
+	}
+}
+
+namespace zones.js {
+	class Zones {
+		+questionMarks: Zone
+		+dogs: Zone
+		+stars: Zone
+		+cows: Zone
+		+Zones()
+		+copyFrom(source: Zones)
+	}
+
+	Zones --> Zone: questionMarks, dogs, stars, cows
+	class Zone {
+		+caption: String
+		+color: String
+		+icon: String
+		+Zone(caption: String, color: String, icon: String)
+		+copyFrom(source: Zone)
+	}
+}
+
+namespace coordinator.js {
+	class Coordinator {
+		-_ruleX: Rule
+		-_ruleY: Rule
+		-_grip: Grip
+		-_questionMarks: Cell
+		-_stars: Cell
+		-_dogs: Cell
+		-_cows: Cell
+		+{readonly} chart: BCGMatrix
+		+{readonly} svg: SVGElement
+		+{readonly} colors: Colors
+		+{readonly} scatterChart: ScatterChart
+		+{readonly} width: float
+		+{readonly} height: float
+		+highlight: highlight
+		+showTicksOnRules: bool = true
+		+xInitValue: float
+		+yInitValue: float
+		..Events..
+		+onrulechange(id: int, pos: float, value: float)
+		+Coordinator(chart: BCGMatrix)
+		+render()
+		+renderRect(x: float, y: float, width: float, height: float, fill: String, opacity: float)
+		+dispose()
+		-_valdiateInitValues()
+		-_renderSvg()
+		-_renderBackground()
+		-_renderLabels()
+		-_renderScatterChart()
+		-_renderRules()
+		-_getScales(): {x: d3.scale, y: d3.scale, xr: Range, yr: Range, cx: float, yc: float}		
+	}
+
+	Coordinator --> Colors : colors
+	class Colors {
+		+rule: String = "#aaa"
+		+text: String = "black"
+		+ticks: String = "black"
+		+background: Stirng = "none"
+		+Colors()
+		+copyFrom(source: Colors)
+	}
+}
+
+coordinator.js.Coordinator --> scatterchart.js.ScatterChart : scatterChart
+coordinator.js.Coordinator --> Cell: _questionMarks, _dogs, _cows, _stars
+coordinator.js.Coordinator --> Grip: _grip
+coordinator.js.Coordinator --> Rule: _ruleX, _ruleY
+class BaseRenderer {
+	+chart: BCGMatrix
+	+coordinator: Coordinator
+	+svg: SVGElement
+	+chartData: ChartData
+	+measures: Measures
+	+scales: Scales
+	+font: Font
+	+margin: Margin
+	+chartWidth: float
+	+chartHeight: float
+	+BaseRenderer(coordinator: Coordinator)
+	+renderRect(x: float, y: float, width: float, height: float, fill: String, opacity: float)
+}
+
+Movable --|> BaseRenderer
+class Movable {
+	-_coordinator: Coordinator
+	+down: bool
+	+xRange: [float, float]
+	+yRange: [float, float]
+	..Events..
+	+onmove(pos: float)
+	+onreset(e: PointerEvent)
+	+onchange()
+	+Movable(coordinator: Coordinator)
+	+render(elem: d3.selection)
+	+dispose()
+	+invertX(x: float): float
+	+invertY(y: float): float
+	+getAttribute(name: String): any
+	+setAttribute(name: String, value: any)
+	#{virtual} transform()
+	#{virtual} move(p: SVGPoint)
+	#{virtual} reset()
+	#{virtual} testBoundary(p: SVGPoint): bool
+	#handlePointerDown(e: PointerEvent)
+	#handlePointerMove(e: PointerEvent)
+	#handlePointerUp(e: PointerEvent)
+	-_convertPosition(e: PointerEvent)
+}
+
+Rule --|> Movable
+class Rule {
+	-_x1: float
+	-_y1: float
+	-_x2: float
+	-_y2: float
+	-_isVertical: bool
+	-_gravity: int	
+	-_g: SVGGElement
+	-_label: SVGTextElement
+	+showTicks: bool = true
+	+position: float
+	+{readonly} value: float
+	+Rule(coordinator: Coordinator, x1: float, y1: float, x2: float, y2: float)
+	+render()
+	+hideLabel()
+	-_rotateTicks(g: SVGGElement)
+	-_stick(v: float, ticks: float[]): float
+}
+
+Grip --|> Movable
+class Grip {
+	-_r: float = 10
+	-_x: float
+	-_y: float
+	-_circle: SVGCircleElement
+	+x: float
+	+y: float
+	+render()
+}
+
+class Cell {
+	-_svg: SVGElement
+	-_zone: Zone
+	-_g: SVGGElement
+	-_rect: SVGRectElement
+	-_label: SVGGElement
+	+x: float
+	+y: float
+	+width: float
+	+height: float
+	+color: String
+	..Events..
+	+onclick(e: PointerEvent)
+	+Cell(svg: SVGElement, x: float, y: float, width: float, height: float, zone: Zone)
+	+render(): Cell
+	-_transform()
+}
+
+scatterchart.js.ScatterChart --|> BaseRenderer
+namespace scatterchart.js {
+	class ScatterChart {
+		-_dots: d3.selection
+		-_focus: Point
+		+{readonly} x: d3.scale
+		+{readonly} y: d3.scale
+		+{readonly} r: d3.scale
+		+xLevel: float
+		+yLevel: float
+		+{readonly} formats: {x: NumberFormat, y: NumberFormat: radius: NumberFormat}
+		+{readonly} infoLayer: InfoLayer
+		+highlight: highlight = Highlight.none
+		..Events..
+		+onhover(e: PointerEvent, d: Point, content: String[])
+		+onleave(e: PointerEvent, d: Point)
+		+onclick(e: PointerEvent, d: Point)
+		+ScatterChart(coordinator: Coordinator)
+		+render(): scatterchart
+		+hideAnnotation()
+		-_initInfoLayer()
+		_rotateTicks(g: d3.selection, isXAxis: bool)
+		-_renderXAxis()
+		-_renderYAxis()
+		-_xAxis(g: d3.selection): d3.selection
+		-_yAxis(g: d3.selection): d3.selection
+		_getAxis(axis: d3.axis, scale: d3.scale, format: NumberFormat)
+		-_renderDots(): d3.axis
+		-_highlightDots
+		-_getColor(d: Point): String
+		-_updateColor()
+		-_getTooltipContent(d: Point): String[]
+		-_handlePointerEnter(e: PointerEvent, d: Point)
+		-_handlePointerMove(e: PointerEvent, d: Point)
+		-_handlePointerLeave(e: PointerEvent, d: Point)
+		-_handleClick(e: PointerEvent, d: Point)			
+	}
+		
+	class Highlight {
+		+none: int = 0
+		+all: int = 1
+		+min: int = 2
+		+max: int = 3
+		+minMax: int = 4
+		+top: int = 5
+		+bottom: int = 6
+		+topBottom: int = 7
+		+getTester(index: int): Function(d: Point): bool
+	}
+}
+
+scatterchart.js.ScatterChart --> InfoLayer: InfoLayer
+class InfoLayer {
+	-_svg: SVGElement
+	-_font: Font
+	-_tooltip: InfoBox
+	-_annotation: Annotation
+	+showTooltip: bool = true
+	+showAnnotation: bool = true
+	..Events..
+	+assignDelegates(obj: Object, font: Font)
+	+InfoLayer()
+	+initialize(svg: SVGElement, font: Font)
+	+openTooltip(e: PointerEvent, content: String[])
+	+moveTooltip(e: PointerEvent)
+	+hideTooltip()
+	+openAnnotation(content: String[], x: float, y: float, r: float)
+	+hideAnnotation()
+}
+
+InfoLayer --> infobox.js.InfoBox: _tooltip
+InfoLayer --> infobox.js.Annotation: _annotation
+namespace infobox.js {
+	class InfoBox {
+		-_svg: SVGElement
+		-_font: font
+		-_charBox: BBox	
+		+left: float
+		+top: float
+		+{readonly} box: SVGGElemnent
+		+{readony} offset: int = 10
+		..Delegates..
+		+getBBox(s: String): BBox
+		+calcTextWidth(s: String): float
+		+calcPosition(c: SVGPoint, b: BBox): {left: float, top: float}
+		--
+		+Tooltip(svg: SVGElement, font: Font, fill: String, opacity: float, stroke: String)
+		+{virtual} show(e: PointerEvent, content: String[], x: float, y: float)
+		+{virtual} move(e: PointerEvent, x: float, y: float)
+		+hide()
+		-_initBox(fill: String, opacity: float: stroke: String)
+		-_calcWidth(strs: String[])
+		-_convertCoordinate(e: PointerEvent, g: SVGGElement)
+	}
+
+	InfoBox <|- Annotation
+	class Annotation {
+		-_pointer: SVGPathElement
+		-_removePointer()
+	}
+}
+
+@enduml

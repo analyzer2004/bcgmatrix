@@ -82,7 +82,6 @@ class Font {
     style(_) { return arguments.length ? (this._style = _, this) : this._style; }
     weight(_) { return arguments.length ? (this._weight = _, this) : this._weight; }
 
-
     applyTo(elem) {
         elem = elem instanceof HTMLElement ? d3.select(elem) : elem;
         elem.style("font-family", this._family)
@@ -93,6 +92,15 @@ class Font {
 
     clone() {
         return new Font(this._family, this._size, this._style, this._weight);
+    }
+
+    copyFrom(source) {
+        if (source) {
+            if (source.family) this._family = source.family;
+            if (source.size) this._size = source.size;
+            if (source.style) this._style = source.style;
+            if (source.weight) this._weight = source.weight;
+        }
     }
 }
 
