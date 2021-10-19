@@ -1207,7 +1207,7 @@ group=19</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>280</x>
-      <y>1169</y>
+      <y>1155</y>
       <w>231</w>
       <h>217</h>
     </coordinates>
@@ -1238,14 +1238,15 @@ group=19</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>280</x>
-      <y>1442</y>
+      <y>1421</y>
       <w>231</w>
-      <h>70</h>
+      <h>84</h>
     </coordinates>
     <panel_attributes>Block
 --
 +&lt;&lt;readonly&gt;&gt; object: SVGText | SVGCircle
 +boundary: Boundary
++&lt;&lt;readonly&gt;&gt; isValid: bool
 --
 +Block(elem: SVGText | SVGCircle)
 +overlaps(target: Block): bool
@@ -1256,9 +1257,9 @@ group=19</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>280</x>
-      <y>1561</y>
+      <y>1547</y>
       <w>231</w>
-      <h>161</h>
+      <h>175</h>
     </coordinates>
     <panel_attributes>Boundry
 --
@@ -1268,6 +1269,7 @@ group=19</panel_attributes>
 +y2: float
 +&lt;&lt;readonly&gt;&gt; width: float
 +&lt;&lt;readonly&gt;&gt; height: float
++&lt;&lt;static&gt;&gt; empty: Boundary
 --
 +Boundary(clientRect: DOMRect)
 +overlaps(target: Boundary): bool
@@ -1304,39 +1306,39 @@ group=19</panel_attributes>
       <x>385</x>
       <y>1092</y>
       <w>63</w>
-      <h>91</h>
+      <h>77</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 -_bubbles
 group=19</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>385</x>
-      <y>1379</y>
+      <y>1365</y>
       <w>49</w>
-      <h>77</h>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +circle
 +text
 group=19</panel_attributes>
-    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>385</x>
-      <y>1505</y>
+      <y>1498</y>
       <w>70</w>
-      <h>70</h>
+      <h>63</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +boundary
 group=19</panel_attributes>
-    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>

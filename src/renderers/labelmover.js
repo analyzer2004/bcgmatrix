@@ -19,9 +19,9 @@ export default class LabelMover {
         while (clogs.length > 0 && pass <= this._maxPass) {
             clogs.sort((a, b) => b.clogs.length - a.clogs.length);
             clogs.forEach(b => b.unclog(this._bubbles, pass));
-            clogs = this._findClogs(this._bubbles);            
+            clogs = this._findClogs(this._bubbles);
             pass++;
-        }        
+        }
     }
 
     _initialize() {
@@ -72,7 +72,7 @@ class Bubble {
     }
 
     findClogs(bubbles) {
-        this._clogs = bubbles.filter(bubble => bubble !== this && this.overlaps(bubble));
+        this._clogs = bubbles.filter(bubble => bubble !== this && bubble.text.isValid && this.overlaps(bubble));
     }
 
     unclog(bubbles, factor) {
@@ -236,10 +236,13 @@ class Bubble {
 class Block {
     constructor(elem) {
         this._object = elem;
-        this.boundary = new Boundary(elem.node().getBoundingClientRect());
+        this.boundary = elem.node()
+            ? new Boundary(elem.node().getBoundingClientRect())
+            : Boundary.empty;
     }
 
     get object() { return this._object; }
+    get isValid() { return this._object && this._object.node(); }
 
     overlaps(target) {
         return this.boundary.overlaps(target.boundary);
@@ -256,6 +259,7 @@ class Boundary {
 
     get width() { return Math.abs(this.x2 - this.x1); }
     get height() { return Math.abs(this.y2 - this.y1); }
+    static get empty() { return new Boundary({ left: 0, top: 0, right: 0, bottom: 0 }); }
 
     overlaps(target) {
         const { x1, y1, x2, y2 } = this;

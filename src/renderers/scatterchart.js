@@ -53,7 +53,9 @@ class ScatterChart extends BaseRenderer {
         this._highlightDots();
         this._initInfoLayer();
 
-        new LabelMover(this).run();
+        if (this.highlight !== Highlight.none) {
+            new LabelMover(this).run();
+        }
         return this;
     }
 
