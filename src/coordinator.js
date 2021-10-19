@@ -38,7 +38,7 @@ export default class Coordinator {
         this._renderSvg();
         this._renderBackground();
 
-        this._renderLabels();
+        this._renderZones();                
         this._renderScatterChart();
         this._renderRules();
     }
@@ -82,7 +82,7 @@ export default class Coordinator {
         this.renderRect(0, 0, this.width, this.height, this._colors.background);
     }
 
-    _renderLabels() {
+    _renderZones() {
         const
             zones = this.chart.zones(),
             { x, y, xr, yr, xc, yc } = this._getScales(),

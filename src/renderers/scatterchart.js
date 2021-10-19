@@ -2,6 +2,7 @@
 import InfoLayer from "./infolayer.js";
 import { ScaleType } from "../scales.js";
 import { ValueFlag } from "../chartdata.js";
+import LabelMover from "./labelmover.js";
 
 class ScatterChart extends BaseRenderer {
     constructor(coordinator) {
@@ -21,6 +22,7 @@ class ScatterChart extends BaseRenderer {
         this.onclick = null;
     }
 
+    get dots() { return this._dots; }
     get x() { return this.scales.x; }
     get y() { return this.scales.y; }
     get r() { return this.scales.radius; }
@@ -46,16 +48,22 @@ class ScatterChart extends BaseRenderer {
         this._yLevel = this._yLevel ?? this.scales.yDefault;
         this._renderXAxis();
         this._renderYAxis();
+        this._renderConnectorLayer();
         this._renderDots();
         this._highlightDots();
         this._initInfoLayer();
 
+        new LabelMover(this).run();
         return this;
     }
 
     hideAnnotation() {
         this._infoLayer.hideAnnotation();
         this._focus = null;
+    }
+
+    _renderConnectorLayer() {
+        this.svg.append("g").attr("class", "connectors");
     }
 
     _initInfoLayer() {
@@ -191,7 +199,7 @@ class ScatterChart extends BaseRenderer {
 
         const ch = this.measures.charBox.height;
         this._dots.filter(tester)
-            .append("text")
+            .append("text")            
             .attr("dy", d => {
                 const r = this.r(d.r);
                 return r < ch ? r + ch / 1.5 : 0;
@@ -240,6 +248,7 @@ class ScatterChart extends BaseRenderer {
 
     _handlePointerEnter(e, d) {
         this._dots.select("circle").attr("opacity", dot => dot === d ? 0.75 : 0.5);
+        this._dots.select("text").attr("font-weight", dot => dot === d ? "bold" : null);
 
         const content = this._getTooltipContent(d);
         this._infoLayer.openTooltip(e, content);
@@ -252,6 +261,7 @@ class ScatterChart extends BaseRenderer {
 
     _handlePointerLeave(e, d) {
         this._dots.select("circle").attr("opacity", 0.5);
+        this._dots.select("text").attr("font-weight", null);
         this._infoLayer.hideTooltip();
         if (this.onleave) this.onleave(e, d);
     }

@@ -6,24 +6,24 @@
     <script type="module">
         import BCGMatrix from "../src/bcgmatrix.js";
 
-        d3.csv("./bcg2.csv", d3.autoType)
+        d3.csv("./messylabel.csv", d3.autoType)
             .then(data => {
                 new BCGMatrix(document.querySelector("#rootSvg"))
                     .size([1280, 960])
                     .options({
                         dotRadius: 5,
                         bubbleRadiusRange: [5, 40],
-                        highlightScope: "topBottom",
-                        xScaleType: "pow",
+                        highlightScope: "all",
+                        xScaleType: "linear",
                         xExponent: 0.15,
-                        yScaleType: "pow",
+                        yScaleType: "linear",
                         yExponent: 0.08
                     })
-                    .data(data.filter(d => d.Year === 2021))
+                    .data(data.filter(d => d.Year === 2020))
                     .columns({
-                        name: { name: "Subcategory" },
+                        name: { name: "State" },
                         x: {
-                            name: "Sales",
+                            name: "Profit",
                             label: "Sales (USD)",
                             format: { short: ",.2s", long: ",.0f" }
                         },
@@ -33,7 +33,7 @@
                             format: { short: ".0%", long: ".1%" }
                         },
                         radius: {
-                            name: "Profit",
+                            name: "Order",
                             label: "Profit (USD)",
                             format: { short: ",.2s", long: ",.0f" }
                         }
