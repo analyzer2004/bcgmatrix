@@ -1,0 +1,1407 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2646</x>
+      <y>714</y>
+      <w>371</w>
+      <h>231</h>
+    </coordinates>
+    <panel_attributes>BCGMatrix
+--
+-_dataset: Object[]
+-_options: BCGMatrixOptions
+-_coordinator: Coordinator
++{readonly} container: SVGElement
++{readonly} chartData: ChartData
++{readonly} measures: Measures
++{readonly} scales: Scales
++{readonly} zones: Zones
+--
++BCGMatrix(container: SVGElement)
++{chainable} size([width: Number, height: Number]): BCGMatrix | Size
++{chainable} options(options: BCGMatrixOptions): BCGMatrix | BCGMatrixOptions
++{chainable} zones(zones: Zones): BCGMatrix | Zones
++{chainable} colors(colors: Colors): BCGMatrix | Colors		
++{chainable} columns(columns: FieldInfos): BCGMatrix | FieldInfos
++{chainable} font(font: Font): BCGMatrix | Font
++{chainable} events(events: Events): BCGMatrix | Events
++render(): BCGMatrix
++dispose()
+
+group=14</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2821</x>
+      <y>987</y>
+      <w>196</w>
+      <h>175</h>
+    </coordinates>
+    <panel_attributes>BCGMatrixOptions
+--
++dotRadius: float = 5
++bubbleRadiusRange: [0..1] = [5, 30]
++highlightScope: String = "none"
++numberOfTopBottom: int = 5
++showTooltip: bool = true
++showAnnotation: bool = true
++xInitValue: float
++xExponent: float = 1
++xScaleType: String = "linear"
++yInitValue: float
++yExponent: float = 1
++yScaleType: String = "linear"
++showTicksOnRules: bool = true
+
+group=14</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2905</x>
+      <y>938</y>
+      <w>63</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+-_options
+group=14</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>2632</x>
+      <y>679</y>
+      <w>413</w>
+      <h>504</h>
+    </coordinates>
+    <panel_attributes>bcgmatrix.js
+--
+fg=#af7aa1
+group=14</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3136</x>
+      <y>1176</y>
+      <w>406</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>ChartData
+--
++{readonly} dataset: Point[0..n]
++{readonly} fieldInfos: FieldInfos
++{readonly} extents: Extents
++{readonly} fieldNames: {name: String, x: String, y: String, radius: String}
++{readonly} fieldFormats: {x: NumberFormat, y: NumberFormat: radius: NumberFormat}
++numOfTopBottom: int = 5
+--
++ChartData()
++process(source: Object[])
+group=9</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3164</x>
+      <y>1533</y>
+      <w>371</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>FieldInfo
+--
++name: FieldInfo
++x: FieldInfo
++y: FieldInfo
++radius: FieldInfo
++{readonly} names: {name: String, x: String, y: String, radius: String}
++{readonly} formats: {x: NumberFormat, y: NumberFormat: radius: NumberFormat}
+--
++FieldInfo()
++copyFrom(source: FieldInfos)
+
+group=9</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3157</x>
+      <y>1344</y>
+      <w>371</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>FieldInfos
+--
++name: FieldInfo
++x: FieldInfo
++y: FieldInfo
++radius: FieldInfo
++{readonly} names: {name: String, x: String, y: String, radius: String}
++{readonly} formats: {x: NumberFormat, y: NumberFormat: radius: NumberFormat}
+--
++FieldInfo()
++copyFrom(source: FieldInfos)
+group=9</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3598</x>
+      <y>1554</y>
+      <w>175</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>NumberFormat
+--
++short: Stirng = ",.2s"
++long: String = ",.2f"
+--
++NumberFormat()
++copyFrom(source: NumberFormat)
+group=9</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3633</x>
+      <y>1183</y>
+      <w>273</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>Point
+--
++name: String
++x: float
++y: float
++r: float
++flag: ValueFlag = ValueFlag.unspecified
+--
++Point(name: String, x: float, y: float, r: float, flag: ValueFlag)
+
+group=9</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3633</x>
+      <y>1295</y>
+      <w>91</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Extents
+--
++x: float[0..1]
++y: float[0..1]
++radius: float[0..1]
+group=9</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3738</x>
+      <y>1316</y>
+      <w>91</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enum&gt;&gt;
+ValueFlag
+--
+unspecified = 0
+min = 1
+max = 2
+bottomGroup = 4
+topGroup = 8
+
+group=9</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3346</x>
+      <y>1288</y>
+      <w>63</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++fieldInfos
+group=9</panel_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3346</x>
+      <y>1456</y>
+      <w>49</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++name
++x
++y
++radius
+group=9</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3535</x>
+      <y>1218</y>
+      <w>112</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
++dataset
+group=9</panel_attributes>
+    <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3535</x>
+      <y>1246</y>
+      <w>119</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++extends
+group=9</panel_attributes>
+    <additional_attributes>140.0;110.0;90.0;110.0;90.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3528</x>
+      <y>1589</y>
+      <w>84</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+group=9</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3766</x>
+      <y>1274</y>
+      <w>42</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++flag</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>3122</x>
+      <y>1141</y>
+      <w>798</w>
+      <h>532</h>
+    </coordinates>
+    <panel_attributes>chartdata.js
+--
+fg=#4e79a7
+group=9</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3010</x>
+      <y>833</y>
+      <w>140</w>
+      <h>427</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++chartData</panel_attributes>
+    <additional_attributes>180.0;590.0;80.0;590.0;80.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3423</x>
+      <y>1764</y>
+      <w>98</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>Margin
+--
++left: float = 50
++top: float = 20
++right: float = 20
++bottom: float = 20
+--
++Margin()
+group=11</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3143</x>
+      <y>1764</y>
+      <w>217</w>
+      <h>182</h>
+    </coordinates>
+    <panel_attributes>Measures
+--
+-_chart: BCGMatrix
++font: Font
++width: float = 1024
++height: float = 768
++margin: Margin
++{readonly} charBox: BBox
++{readonly} tickSpace: int = 10
+--
++Measures(chart: BCGMatrix)
++initialize()
++getBBox(str: String, font: Font): BBox
++calcStringWidth(str: String, font: Font): float
++calcMaxWidth(array: String[], font: Font): float
+-_createMeasureText()
+-_calcMargins()
+group=11</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3353</x>
+      <y>1792</y>
+      <w>84</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++margin
+group=11</panel_attributes>
+    <additional_attributes>100.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>3122</x>
+      <y>1722</y>
+      <w>462</w>
+      <h>252</h>
+    </coordinates>
+    <panel_attributes>measures.js
+--
+fg=#4e79a7
+group=11</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2779</x>
+      <y>938</y>
+      <w>378</w>
+      <h>896</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++measures</panel_attributes>
+    <additional_attributes>520.0;1260.0;330.0;1260.0;330.0;860.0;10.0;860.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3283</x>
+      <y>707</y>
+      <w>189</w>
+      <h>231</h>
+    </coordinates>
+    <panel_attributes>Scales
+--
+-_chart: BCGMatrix
++xScaleType: ScaleType
++yScaleType: ScaleType
++xExponent: float = 1
++yExponent: float = 1
++dotRadius: float = 5
++bubbleRadiusRange: float[0..1] = [5, 30]
++{readonly} x: d3.scale
++{readonly} y: d3.scale
++{readonly} radius: d3.scaleLinear
++{readonly} isBubble: bool
++{readonly} xTicks: float[0..n]
++{readonly} yTicks: float[0..n]
++{readonly} xDefault: float
++{readonly} yDefault: float
++Scale(chart: BCGMatrix)
++initialize()
++_calcMidPoint(scale: d3.scale): float
+group=12</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3150</x>
+      <y>994</y>
+      <w>434</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>ScaleType
+--
++{static} linear = 0
++{static} log = 1
++{static} sqrt = 2
++{static} pow = 3
+--
++{static} getScale(type: int, domain: [float, float], range: [float, float], nice: bool, exponent: float)
+
+group=12</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3367</x>
+      <y>931</y>
+      <w>77</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++xScaleType
++yScaleType
+group=12</panel_attributes>
+    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>3122</x>
+      <y>679</y>
+      <w>504</w>
+      <h>434</h>
+    </coordinates>
+    <panel_attributes>scales.js
+--
+fg=#4e79a7
+group=12</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3010</x>
+      <y>770</y>
+      <w>287</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++scales</panel_attributes>
+    <additional_attributes>390.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2667</x>
+      <y>1652</y>
+      <w>140</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>Zones
+--
++questionMarks: Zone
++dogs: Zone
++stars: Zone
++cows: Zone
++showIcons: bool
++showLabels: bool
+--
++Zones()
++copyFrom(source: Zones)
+group=20</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2667</x>
+      <y>1848</y>
+      <w>217</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>Zone
+--
++caption: String
++color: String
++icon: String
++showIcon: bool
++showLabel: bool
+--
++Zone(caption: String, color: String, icon: String)
++copyFrom(source: Zone)
+group=20</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2737</x>
+      <y>1764</y>
+      <w>91</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++questionMarks
++dogs
++stars
++cows
+group=20</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>2625</x>
+      <y>1603</y>
+      <w>287</w>
+      <h>378</h>
+    </coordinates>
+    <panel_attributes>zones.js
+--
+fg=#4e79a7
+group=20</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2723</x>
+      <y>938</y>
+      <w>49</w>
+      <h>728</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++zones</panel_attributes>
+    <additional_attributes>10.0;1020.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2128</x>
+      <y>714</y>
+      <w>392</w>
+      <h>357</h>
+    </coordinates>
+    <panel_attributes>Coordinator
+--
+-_ruleX: Rule
+-_ruleY: Rule
+-_grip: Grip
+-_questionMarks: Cell
+-_stars: Cell
+-_dogs: Cell
+-_cows: Cell
++{readonly} chart: BCGMatrix
++{readonly} svg: SVGElement
++{readonly} colors: Colors
++{readonly} scatterChart: ScatterChart
++{readonly} width: float
++{readonly} height: float
++highlight: highlight
++showTicksOnRules: bool = true
++xInitValue: float
++yInitValue: float
+-..
++onrulechange(id: int, pos: float, value: float)
+--
++Coordinator(chart: BCGMatrix)
++render()
++renderRect(x: float, y: float, width: float, height: float, fill: String, opacity: float)
++dispose()
+-_valdiateInitValues()
+-_renderSvg()
+-_renderBackground()
+-_renderLabels()
+-_renderScatterChart()
+-_renderRules()
+-_getScales(): {x: d3.scale, y: d3.scale, xr: Range, yr: Range, cx: float, yc: float}		
+
+group=15</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2352</x>
+      <y>1134</y>
+      <w>175</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>Colors
+--
++rule: String = "#aaa"
++text: String = "black"
++ticks: String = "black"
++background: Stirng = "none"
+--
++Colors()
++copyFrom(source: Colors)
+
+group=15</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2429</x>
+      <y>1064</y>
+      <w>49</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++colors
+group=15</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>2100</x>
+      <y>679</y>
+      <w>448</w>
+      <h>574</h>
+    </coordinates>
+    <panel_attributes>coordinator.js
+--
+fg=#4e79a7
+group=15</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2513</x>
+      <y>798</y>
+      <w>147</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++coordinator</panel_attributes>
+    <additional_attributes>10.0;20.0;190.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1085</x>
+      <y>385</y>
+      <w>371</w>
+      <h>161</h>
+    </coordinates>
+    <panel_attributes>BaseRenderer
+--
++chart: BCGMatrix
++coordinator: Coordinator
++svg: SVGElement
++chartData: ChartData
++measures: Measures
++scales: Scales
++font: Font
++margin: Margin
++chartWidth: float
++chartHeight: float
+--
++BaseRenderer(coordinator: Coordinator)
++renderRect(x: float, y: float, width: float, height: float, fill: String, opacity: float)
+
+group=19</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1694</x>
+      <y>315</y>
+      <w>210</w>
+      <h>273</h>
+    </coordinates>
+    <panel_attributes>Movable
+--
+-_coordinator: Coordinator
+#down: bool
++xRange: float[0..1]
++yRange: float[0..1]
+-..
++onmove(pos: float)
++onreset(e: PointerEvent)
++onchange()
++Movable(coordinator: Coordinator)
++render(elem: d3.selection)
++dispose()
++invertX(x: float): float
++invertY(y: float): float
++getAttribute(name: String): any
++setAttribute(name: String, value: any)
+#{virtual} transform()
+#{virtual} move(p: SVGPoint)
+#{virtual} reset()
+#{virtual} testBoundary(p: SVGPoint): bool
+#handlePointerDown(e: PointerEvent)
+#handlePointerMove(e: PointerEvent)
+#handlePointerUp(e: PointerEvent)
+-_convertPosition(e: PointerEvent)
+
+group=19</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1449</x>
+      <y>441</y>
+      <w>259</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+group=19</panel_attributes>
+    <additional_attributes>10.0;10.0;350.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1631</x>
+      <y>658</y>
+      <w>315</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>Rule
+--
+-_x1: float
+-_y1: float
+-_x2: float
+-_y2: float
+-_isVertical: bool
+-_gravity: int	
+-_g: SVGGElement
+-_label: SVGTextElement
++showTicks: bool = true
++position: float
++{readonly} value: float
+--
++Rule(coordinator: Coordinator, x1: float, y1: float, x2: float, y2: float)
++render()
++hideLabel()
+-_rotateTicks(g: SVGGElement)
+-_stick(v: float, ticks: float[]): float
+
+group=19</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1792</x>
+      <y>581</y>
+      <w>21</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+group=19</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1666</x>
+      <y>882</y>
+      <w>217</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>Grip
+--
+-_r: float = 10
+-_x: float
+-_y: float
+-_circle: SVGCircleElement
++x: float
++y: float
+--
++Grip(coordinator: Coordinator, x: float, y: float)
++render()
+group=19</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1939</x>
+      <y>756</y>
+      <w>203</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++ruleX
++ruleY</panel_attributes>
+    <additional_attributes>10.0;20.0;270.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1876</x>
+      <y>903</y>
+      <w>266</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++grip</panel_attributes>
+    <additional_attributes>10.0;20.0;360.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1589</x>
+      <y>1218</y>
+      <w>399</w>
+      <h>189</h>
+    </coordinates>
+    <panel_attributes>Cell
+--
+-_svg: SVGElement
+-_zone: Zone
+-_g: SVGGElement
+-_rect: SVGRectElement
+-_label: SVGGElement
++x: float
++y: float
++width: float
++height: float
++color: String
+-..
++onclick(e: PointerEvent)
+--
++Cell(svg: SVGElement, x: float, y: float, width: float, height: float, zone: Zone)
++render(): Cell
+-_transform()
+
+group=19</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1785</x>
+      <y>1064</y>
+      <w>476</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++questionMarks
++stars
++dogs
++cows</panel_attributes>
+    <additional_attributes>10.0;220.0;10.0;90.0;660.0;90.0;660.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>994</x>
+      <y>714</y>
+      <w>469</w>
+      <h>399</h>
+    </coordinates>
+    <panel_attributes>ScatterChart
+--
+-_dots: d3.selection
+-_focus: Point
++{readonly} x: d3.scale
++{readonly} y: d3.scale
++{readonly} r: d3.scale
++xLevel: float
++yLevel: float
++{readonly} formats: {x: NumberFormat, y: NumberFormat: radius: NumberFormat}
++{readonly} infoLayer: InfoLayer
++highlight: highlight = Highlight.none
+-..
++onhover(e: PointerEvent, d: Point, content: String[])
++onleave(e: PointerEvent, d: Point)
++onclick(e: PointerEvent, d: Point)
+--
++ScatterChart(coordinator: Coordinator)
++render(): scatterchart
++hideAnnotation()
+-_renderConnectorLayer()
+-_initInfoLayer()
+_rotateTicks(g: d3.selection, isXAxis: bool)
+-_renderXAxis()
+-_renderYAxis()
+-_xAxis(g: d3.selection): d3.selection
+-_yAxis(g: d3.selection): d3.selection
+_getAxis(axis: d3.axis, scale: d3.scale, format: NumberFormat)
+-_renderDots(): d3.axis
+-_highlightDots
+-_getColor(d: Point): String
+-_updateColor()
+-_getTooltipContent(d: Point): String[]
+-_handlePointerEnter(e: PointerEvent, d: Point)
+-_handlePointerMove(e: PointerEvent, d: Point)
+-_handlePointerLeave(e: PointerEvent, d: Point)
+-_handleClick(e: PointerEvent, d: Point)			
+
+group=19</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>644</x>
+      <y>763</y>
+      <w>259</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>Highlight
+--
++&lt;&lt;static&gt; none: int = 0
++&lt;&lt;static&gt; all: int = 1
++&lt;&lt;static&gt; min: int = 2
++&lt;&lt;static&gt; max: int = 3
++&lt;&lt;static&gt; minMax: int = 4
++&lt;&lt;static&gt; top: int = 5
++&lt;&lt;static&gt; bottom: int = 6
++&lt;&lt;static&gt; topBottom: int = 7
+--
++&lt;&lt;static&gt; getTester(index: int): Function(d: Point): bool
+group=19</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1288</x>
+      <y>539</y>
+      <w>21</w>
+      <h>189</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+group=19</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;250.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>896</x>
+      <y>812</y>
+      <w>112</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++highlight
+group=19</panel_attributes>
+    <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1456</x>
+      <y>1008</y>
+      <w>686</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++scatterChart</panel_attributes>
+    <additional_attributes>10.0;20.0;960.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>623</x>
+      <y>665</y>
+      <w>861</w>
+      <h>469</h>
+    </coordinates>
+    <panel_attributes>scatterchart.js
+--
+fg=#4e79a7
+group=19</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>980</x>
+      <y>1267</y>
+      <w>301</w>
+      <h>182</h>
+    </coordinates>
+    <panel_attributes>InfoLayer
+--
+-_svg: SVGElement
+-_font: Font
+-_tooltip: InfoBox
+-_annotation: Annotation
++showTooltip: bool = true
++showAnnotation: bool = true
+-..
++assignDelegates(obj: Object, font: Font)
++InfoLayer()
++initialize(svg: SVGElement, font: Font)
++openTooltip(e: PointerEvent, content: String[])
++moveTooltip(e: PointerEvent)
++hideTooltip()
++openAnnotation(content: String[], x: float, y: float, r: float)
++hideAnnotation()
+
+group=19</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1113</x>
+      <y>1561</y>
+      <w>350</w>
+      <h>224</h>
+    </coordinates>
+    <panel_attributes>InfoBox
+--
+-_svg: SVGElement
+-_font: font
+-_charBox: BBox	
++left: float
++top: float
++{readonly} box: SVGGElemnent
++{readony} offset: int = 10
+-..
++getBBox(s: String): BBox
++calcTextWidth(s: String): float
++calcPosition(c: SVGPoint, b: BBox): {left: float, top: float}
+--
++Tooltip(svg: SVGElement, font: Font, fill: String, opacity: float, stroke: String)
++{virtual} show(e: PointerEvent, content: String[], x: float, y: float)
++{virtual} move(e: PointerEvent, x: float, y: float)
++hide()
+-_initBox(fill: String, opacity: float: stroke: String)
+-_calcWidth(strs: String[])
+-_convertCoordinate(e: PointerEvent, g: SVGGElement)
+
+group=19</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1120</x>
+      <y>1820</y>
+      <w>133</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>Annotation
+--
+-_pointer: SVGPathElement
+-_removePointer()
+group=19</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1183</x>
+      <y>1778</y>
+      <w>21</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+group=19</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1190</x>
+      <y>1442</y>
+      <w>56</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+-_tooltip
+group=19</panel_attributes>
+    <additional_attributes>10.0;170.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1029</x>
+      <y>1442</y>
+      <w>105</w>
+      <h>427</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+-_annotation
+group=19</panel_attributes>
+    <additional_attributes>130.0;590.0;10.0;590.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>931</x>
+      <y>1512</y>
+      <w>581</w>
+      <h>378</h>
+    </coordinates>
+    <panel_attributes>infobox.js
+--
+fg=#4e79a7
+group=19</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1134</x>
+      <y>1106</y>
+      <w>63</w>
+      <h>175</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++infoLaye
+group=19</panel_attributes>
+    <additional_attributes>10.0;230.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>280</x>
+      <y>945</y>
+      <w>231</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes>LabelMover
+--
+-_chart: ScatterChart
+-_x1: float
+-_y1: float
+-_x2: float
+-_y2: float
+-_bubbles: Bubble[0..n]
+-_maxPass = 30
+--
++LabelMover(scatterChart: ScatterChart)
++run()
+-_initialize()
+-_findClogs(): Bubble[]
+group=19</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>280</x>
+      <y>1169</y>
+      <w>231</w>
+      <h>217</h>
+    </coordinates>
+    <panel_attributes>Bubble
+--
+-_chart: ScatterChart
+-_group: SVGGElement
+-_link: SVGLineElement
++&lt;&lt;readonly&gt;&gt; svg: SVGElement
++&lt;&lt;readonly&gt;&gt; circle: Block
++&lt;&lt;readonkly&gt;&gt; text: Block
++&lt;&lt;readonly&gt;&gt; boundary: Boundary
++&lt;&lt;readonly&gt;&gt; clogs: Bubble[0..n]
++&lt;&lt;readonly&gt;&gt; label: String
+--
++Bubble(chart: ScatterChart, g: SVGGElement)
++overlaps(target: Bubble): bool
++findClogs(bubbles: Bubble[])
++unclog(bubbles: Bubble[], factor: int)
+-_moveText(bubbles: Bubble[], factor: int)
+-_addLink(dir: Direction)
+-_convertPoint(x: float, y: float): [x, y]
+-&lt;&lt;debug&gt;&gt; _plotBoundary(b: Bubble)
+group=19</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>280</x>
+      <y>1442</y>
+      <w>231</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Block
+--
++&lt;&lt;readonly&gt;&gt; object: SVGText | SVGCircle
++boundary: Boundary
+--
++Block(elem: SVGText | SVGCircle)
++overlaps(target: Block): bool
+group=19</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>280</x>
+      <y>1561</y>
+      <w>231</w>
+      <h>161</h>
+    </coordinates>
+    <panel_attributes>Boundry
+--
++x1: float
++y1: float
++x2: float
++y2: float
++&lt;&lt;readonly&gt;&gt; width: float
++&lt;&lt;readonly&gt;&gt; height: float
+--
++Boundary(clientRect: DOMRect)
++overlaps(target: Boundary): bool
++join(target: Boundary[]): Boundary
++moveTo(x: float, y: float)
++clone(): Boundary
++copyFrom(source: Boundary)
+
+group=19</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>126</x>
+      <y>1631</y>
+      <w>105</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enum&gt;&gt;
+Direction
+--
++&lt;&lt;static&gt;&gt; none = 0
++&lt;&lt;static&gt;&gt; up = 1
++&lt;&lt;static&gt;&gt; down = 2
++&lt;&lt;static&gt;&gt; left = 4
++&lt;&lt;static&gt;&gt; right = 8
+group=19</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>385</x>
+      <y>1092</y>
+      <w>63</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+-_bubbles
+group=19</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>385</x>
+      <y>1379</y>
+      <w>49</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++circle
++text
+group=19</panel_attributes>
+    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>385</x>
+      <y>1505</y>
+      <w>70</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++boundary
+group=19</panel_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>224</x>
+      <y>1666</y>
+      <w>70</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+
+group=19</panel_attributes>
+    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>91</x>
+      <y>903</y>
+      <w>483</w>
+      <h>847</h>
+    </coordinates>
+    <panel_attributes>labelmover.js
+--
+fg=#4e79a7
+group=19</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>504</x>
+      <y>1015</y>
+      <w>504</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+group=19</panel_attributes>
+    <additional_attributes>10.0;10.0;700.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>0</x>
+      <y>0</y>
+      <w>2065</w>
+      <h>1988</h>
+    </coordinates>
+    <panel_attributes>renderers
+--
+lt=.
+fg=#aaaaaa
+group=19</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1589</x>
+      <y>581</y>
+      <w>196</w>
+      <h>357</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+group=19</panel_attributes>
+    <additional_attributes>260.0;10.0;260.0;70.0;10.0;70.0;10.0;490.0;110.0;490.0</additional_attributes>
+  </element>
+</diagram>

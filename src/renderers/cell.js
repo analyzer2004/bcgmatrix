@@ -52,16 +52,21 @@ export default class Cell {
                     .attr("opacity", 0.5)
                     .attr("font-size", "14pt")
                     .attr("font-weight", "bold")
-                    .call(g => g.append("image")
-                        .attr("href", this._zone.icon)
-                        .attr("width", 24)
-                        .attr("height", 24)
-                    )
-                    .call(g => g.append("text")
-                        .attr("x", 30)
-                        .attr("dy", "1em")
-                        .text(this._zone.caption)
-                    );
+                    .call(g => {
+                        if (this._zone.showIcon) {
+                            g.append("image")
+                                .attr("href", this._zone.icon)
+                                .attr("width", 24)
+                                .attr("height", 24);
+                        }
+
+                        if (this._zone.showLabel) {
+                            g.append("text")
+                                .attr("x", this._zone.showIcon ? 30 : 0)
+                                .attr("dy", "1em")
+                                .text(this._zone.caption);
+                        }
+                    });
             })
             .on("click", e => { if (this.onclick) this.onclick(e); })
 
