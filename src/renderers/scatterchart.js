@@ -9,6 +9,7 @@ class ScatterChart extends BaseRenderer {
         super(coordinator);
 
         this._dots = null;
+        this._connectors = null;
         this._xLevel = null;
         this._yLevel = null;
 
@@ -65,7 +66,7 @@ class ScatterChart extends BaseRenderer {
     }
 
     _renderConnectorLayer() {
-        this.svg.append("g").attr("class", "connectors");
+        this._connectors = this.svg.append("g").attr("class", "connectors");
     }
 
     _initInfoLayer() {
@@ -248,9 +249,22 @@ class ScatterChart extends BaseRenderer {
         return content;
     }
 
+    _highlightLinks(d) {
+        if (d) {
+            this._connectors.selectAll("line").each(function (_, i) {
+                const currLink = d3.select(this);
+                currLink.attr("stroke-width", _ => currLink.attr("text") === d.name ? 2 : 0.5);
+            });
+        }
+        else {
+            this._connectors.selectAll("line").attr("stroke-width", 0.5);
+        }
+    }
+
     _handlePointerEnter(e, d) {
-        this._dots.select("circle").attr("opacity", dot => dot === d ? 0.75 : 0.5);
+        this._dots.select("circle").attr("opacity", dot => dot === d ? 0.75 : 0.5);        
         this._dots.select("text").attr("font-weight", dot => dot === d ? "bold" : null);
+        this._highlightLinks(d);
 
         const content = this._getTooltipContent(d);
         this._infoLayer.openTooltip(e, content);
@@ -264,6 +278,7 @@ class ScatterChart extends BaseRenderer {
     _handlePointerLeave(e, d) {
         this._dots.select("circle").attr("opacity", 0.5);
         this._dots.select("text").attr("font-weight", null);
+        this._highlightLinks();
         this._infoLayer.hideTooltip();
         if (this.onleave) this.onleave(e, d);
     }

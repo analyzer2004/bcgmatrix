@@ -207,7 +207,8 @@ class Bubble {
             .attr("y2", y2)
             .attr("stroke", "black")
             .attr("stroke-width", 0.5)
-            .attr("stroke-dasharray", "2");
+            .attr("stroke-dasharray", "2")
+            .attr("text", this.label);
     }
 
     _convertPoint(x, y) {

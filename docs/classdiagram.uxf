@@ -919,11 +919,12 @@ group=19</panel_attributes>
       <x>994</x>
       <y>714</y>
       <w>469</w>
-      <h>399</h>
+      <h>427</h>
     </coordinates>
     <panel_attributes>ScatterChart
 --
 -_dots: d3.selection
+-_connectors: SVGGElement
 -_focus: Point
 +{readonly} x: d3.scale
 +{readonly} y: d3.scale
@@ -954,6 +955,7 @@ _getAxis(axis: d3.axis, scale: d3.scale, format: NumberFormat)
 -_getColor(d: Point): String
 -_updateColor()
 -_getTooltipContent(d: Point): String[]
+-_highlightLinks(d: Point)
 -_handlePointerEnter(e: PointerEvent, d: Point)
 -_handlePointerMove(e: PointerEvent, d: Point)
 -_handlePointerLeave(e: PointerEvent, d: Point)
@@ -1028,7 +1030,7 @@ group=19</panel_attributes>
       <x>623</x>
       <y>665</y>
       <w>861</w>
-      <h>469</h>
+      <h>497</h>
     </coordinates>
     <panel_attributes>scatterchart.js
 --
@@ -1169,14 +1171,14 @@ group=19</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>1134</x>
-      <y>1106</y>
+      <y>1134</y>
       <w>63</w>
-      <h>175</h>
+      <h>147</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +infoLaye
 group=19</panel_attributes>
-    <additional_attributes>10.0;230.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;190.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
