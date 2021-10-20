@@ -7,10 +7,16 @@ export default class LabelMover {
         this._y2 = 0;
         this._bubbles = [];
         this._maxPass = 30;
+        this._border = null;
     }
+
+    get chart() { return this._chart; }
+    get border() { return this._border; }
+    get bubbles() { return this._bubbles; }
 
     run() {
         this._initialize();
+        this._calcBorder();
 
         let
             pass = 1,
@@ -18,8 +24,8 @@ export default class LabelMover {
 
         while (clogs.length > 0 && pass <= this._maxPass) {
             clogs.sort((a, b) => b.clogs.length - a.clogs.length);
-            clogs.forEach(b => b.unclog(this._bubbles, pass));
-            clogs = this._findClogs(this._bubbles);
+            clogs.forEach(b => b.unclog(pass));
+            clogs = this._findClogs();
             pass++;
         }
     }
@@ -36,8 +42,21 @@ export default class LabelMover {
         this._y2 = yr[1];
 
         this._chart.dots.each(function (d, i) {
-            that._bubbles.push(new Bubble(that._chart, d3.select(this)));
+            that._bubbles.push(new Bubble(that, d3.select(this)));
         });
+    }
+
+    _calcBorder() {
+        const
+            p = 5, // padding
+            m = this._chart.margin,
+            b = new Boundary(this._chart.svg.node().getBoundingClientRect());
+
+        b.x1 += m.left + p;
+        b.x2 -= m.right - p;
+        b.y1 += m.top + p;
+        b.y2 -= m.bottom - p;
+        this._border = b;
     }
 
     _findClogs() {
@@ -47,21 +66,21 @@ export default class LabelMover {
 }
 
 class Bubble {
-    constructor(chart, g) {
-        this._chart = chart;
+    constructor(mover, g) {
+        this._mover = mover;        
         this._group = g;
         this._circle = new Block(g.select("circle"));
         this._text = new Block(g.select("text"));
         this._link = null;
-        this._boundary = new Boundary(g.node().getBoundingClientRect());
-        this._border = new Boundary(this.svg.node().getBoundingClientRect());
+        this._boundary = new Boundary(g.node().getBoundingClientRect());        
 
         this._clogs = [];
     }
 
-    get svg() { return this._chart.svg; }
+    get chart() { return this._mover.chart; }    
+    get svg() { return this.chart.svg; }
     get circle() { return this._circle; }
-    get text() { return this._text; }
+    get text() { return this._text; }    
     get boundary() { return this._boundary; }
     get clogs() { return this._clogs; }
     get label() { return this._text.object.text(); }
@@ -71,14 +90,14 @@ class Bubble {
             || this._text.boundary.overlaps(target.circle.boundary);
     }
 
-    findClogs(bubbles) {
-        this._clogs = bubbles.filter(bubble => bubble !== this && bubble.text.isValid && this.overlaps(bubble));
+    findClogs() {
+        this._clogs = this._mover.bubbles.filter(bubble => bubble !== this && bubble.text.isValid && this.overlaps(bubble));
     }
 
-    unclog(bubbles, factor) {
-        this.findClogs(bubbles);
+    unclog(factor) {
+        this.findClogs(this._mover.bubbles);
         if (this._clogs.length > 0) {
-            const dir = this._moveText(bubbles, factor);
+            const dir = this._moveText(factor);
             if (dir) {
                 const
                     dx = this._text.boundary.x1 - this._boundary.x1,
@@ -92,69 +111,58 @@ class Bubble {
         }
     }
 
-    _moveText(bubbles, factor) {
+    _moveText(factor) {
         const
             that = this,
-            margin = this._chart.margin,
-            clogBoundary = this._circle.boundary.join(this._clogs.map(b => b.boundary)),
-            textBoundary = this._text.boundary,
-            backup = textBoundary.clone();
+            bubbles = this._mover.bubbles,
+            cb = this._circle.boundary.join(this._clogs.map(b => b.boundary)), // clog boundary
+            tb = this._text.boundary, // text boundary
+            backup = tb.clone();
 
         // debug
-        //this._plotBoundary(clogBoundary);
+        //this._plotBoundary(cb);
         const
             none = null,
-            up = clogBoundary.y1 - 20 * factor,
-            down = clogBoundary.y2 + 20 * factor,
-            left = clogBoundary.x1 - textBoundary.width / 2 - 5 * factor,
-            right = clogBoundary.x2 + 5 * factor;
+            up = cb.y1 - 20 * factor,
+            down = cb.y2 + 20 * factor,
+            left = cb.x1 - tb.width / 2 - 5 * factor,
+            right = cb.x2 + 5 * factor;
 
-        /*
-        if (move(none, up)) return Direction.up;
-        if (move(none, down)) return Direction.down;
-        if (move(left, none)) return Direction.left;
-        if (move(right, none)) return Direction.right;
-        if (move(left, up)) return Direction.up | Direction.left;
-        if (move(right, up)) return Direction.up | Direction.right;                
-        if (move(left, down)) return Direction.down | Direction.left;
-        if (move(right, down)) return Direction.down | Direction.right;
-        */
-
-        const movers = [
+        const coordinates = [
             shuffle([
-                { func: () => move(none, up), dir: Direction.up },
-                { func: () => move(none, down), dir: Direction.down },
-                { func: () => move(left, none), dir: Direction.left },
-                { func: () => move(right, none), dir: Direction.right },
+                { x: none, y: up, dir: Direction.up },
+                { x: none, y: down, dir: Direction.down },
+                { x: left, y: none, dir: Direction.left },
+                { x: right, y: none, dir: Direction.right },
             ]),
             shuffle([
-                { func: () => move(left, up), dir: Direction.up | Direction.left },
-                { func: () => move(right, up), dir: Direction.up | Direction.right },
-                { func: () => move(left, down), dir: Direction.down | Direction.left },
-                { func: () => move(right, down), dir: Direction.down | Direction.right },
+                { x: left, y: up, dir: Direction.up | Direction.left },
+                { x: right, y: up, dir: Direction.up | Direction.right },
+                { x: left, y: down, dir: Direction.down | Direction.left },
+                { x: right, y: down, dir: Direction.down | Direction.right },
             ])
         ];
 
-        for (let i = 0; i < movers.length; i++) {
-            const set = movers[i];
+        for (let i = 0; i < coordinates.length; i++) {
+            const set = coordinates[i];
             for (let j = 0; j < set.length; j++) {
-                const m = set[j];
-                if (m.func()) return m.dir;
+                const c = set[j];
+                if (move(c.x, c.y)) return c.dir;
             }
         }
 
-        textBoundary.copyFrom(backup);
+        tb.copyFrom(backup);
         return Direction.none;
 
         function move(x, y) {
-            const p = 5; // padding
-            if (x && x < that._border.x1 + margin.left + p) x = that._border.x1 + margin.left + p;
-            if (x && x + textBoundary.width > that._border.x2 - margin.right - p) x = that._border.x2 - margin.right - textBoundary.width - p;
-            if (y && y < that._border.y1 + margin.top + p) y = that._border.y1 + margin.top + p;
-            if (y && y + textBoundary.height > that._border.y2 - margin.bottom - p) y = that._border.y2 - margin.bottom - textBoundary.height - p;
+            const b = that._mover.border; // svg border            
+            if (x && x < b.x1) x = b.x1;
+            if (x && x + tb.width > b.x2) x = b.x2 - tb.width;
+            if (y && y < b.y1) y = b.y1;
+            if (y && y + tb.height > b.y2) y = b.y2 - tb.height;
 
-            textBoundary.copyFrom(backup);
-            textBoundary.moveTo(x, y);
+            tb.copyFrom(backup);
+            tb.moveTo(x, y);
             return pass();
         }
 
