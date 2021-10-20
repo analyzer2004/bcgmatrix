@@ -67,20 +67,20 @@ export default class LabelMover {
 
 class Bubble {
     constructor(mover, g) {
-        this._mover = mover;        
+        this._mover = mover;
         this._group = g;
         this._circle = new Block(g.select("circle"));
         this._text = new Block(g.select("text"));
         this._link = null;
-        this._boundary = new Boundary(g.node().getBoundingClientRect());        
+        this._boundary = new Boundary(g.node().getBoundingClientRect());
 
         this._clogs = [];
     }
 
-    get chart() { return this._mover.chart; }    
+    get chart() { return this._mover.chart; }
     get svg() { return this.chart.svg; }
     get circle() { return this._circle; }
-    get text() { return this._text; }    
+    get text() { return this._text; }
     get boundary() { return this._boundary; }
     get clogs() { return this._clogs; }
     get label() { return this._text.object.text(); }
@@ -91,7 +91,9 @@ class Bubble {
     }
 
     findClogs() {
-        this._clogs = this._mover.bubbles.filter(bubble => bubble !== this && bubble.text.isValid && this.overlaps(bubble));
+        this._clogs = this.text.isValid
+            ? this._mover.bubbles.filter(bubble => bubble !== this && this.overlaps(bubble))
+            : [];
     }
 
     unclog(factor) {
@@ -251,7 +253,7 @@ class Block {
     }
 
     get object() { return this._object; }
-    get isValid() { return this._object && this._object.node(); }
+    get isValid() { return this._object && this._object.node() !== null; }
 
     overlaps(target) {
         return this.boundary.overlaps(target.boundary);
@@ -272,12 +274,21 @@ class Boundary {
 
     overlaps(target) {
         const { x1, y1, x2, y2 } = this;
-        let a = 0, b = 0;
-        if (target.x1 >= x1 && target.x1 <= x2) a++;
-        if (target.x2 >= x1 && target.x2 <= x2) a++;
-        if (target.y1 >= y1 && target.y1 <= y2) b++;
-        if (target.y2 >= y1 && target.y2 <= y2) b++;
-        return a !== 0 && b !== 0;
+        let a = 0, b = 0, c = 0, d = 0;
+
+        if (test(target.x1, x1, x2)) a++;
+        if (test(target.x2, x1, x2)) a++;
+        if (test(target.y1, y1, y2)) b++;
+        if (test(target.y2, y1, y2)) b++;
+        if (test(x1, target.x1, target.x2)) c++;
+        if (test(x2, target.x1, target.x2)) c++;
+        if (test(y1, target.y1, target.y2)) d++;
+        if (test(y2, target.y1, target.y2)) d++;
+        return (a !== 0 && b !== 0) || (c !== 0 && d !== 0);
+
+        function test(t, l, r) {
+            return t >= l && t <= r;
+        }
     }
 
     join(targets) {
