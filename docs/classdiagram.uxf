@@ -518,7 +518,7 @@ group=12</panel_attributes>
       <x>2667</x>
       <y>1652</y>
       <w>140</w>
-      <h>119</h>
+      <h>140</h>
     </coordinates>
     <panel_attributes>Zones
 --
@@ -526,8 +526,10 @@ group=12</panel_attributes>
 +dogs: Zone
 +stars: Zone
 +cows: Zone
++all: Zone[4]
 +showIcons: bool
 +showLabels: bool
++showBackground: bool
 --
 +Zones()
 +copyFrom(source: Zones)
@@ -540,7 +542,7 @@ group=20</panel_attributes>
       <x>2667</x>
       <y>1848</y>
       <w>217</w>
-      <h>112</h>
+      <h>119</h>
     </coordinates>
     <panel_attributes>Zone
 --
@@ -549,6 +551,7 @@ group=20</panel_attributes>
 +icon: String
 +showIcon: bool
 +showLabel: bool
++showBackground: bool
 --
 +Zone(caption: String, color: String, icon: String)
 +copyFrom(source: Zone)
@@ -559,9 +562,9 @@ group=20</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>2737</x>
-      <y>1764</y>
+      <y>1785</y>
       <w>91</w>
-      <h>98</h>
+      <h>77</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +questionMarks
@@ -569,7 +572,7 @@ group=20</panel_attributes>
 +stars
 +cows
 group=20</panel_attributes>
-    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLPackage</id>

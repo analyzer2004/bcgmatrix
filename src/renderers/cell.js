@@ -44,7 +44,7 @@ export default class Cell {
         this._g = this._svg.append("g")
             .call(g => {
                 this._rect = g.append("rect")
-                    .attr("fill", this._zone.color)
+                    .attr("fill", this._zone.showBackground ? this._zone.color : "none")
                     .attr("opacity", 0.2);
 
                 this._label = g.append("g")
