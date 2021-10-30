@@ -128,6 +128,7 @@ class ScatterChart extends BaseRenderer {
                 .attr("y", "1em")
                 .attr("font-weight", "bold")
                 .attr("fill", this.coordinator.colors.text)
+                .style("font-family", this.font.family())
                 .text(`${this.chartData.fieldInfos.x.label} →`)
             );
     }
@@ -146,6 +147,7 @@ class ScatterChart extends BaseRenderer {
                 .attr("font-weight", "bold")
                 .attr("dy", "1em")
                 .attr("fill", this.coordinator.colors.text)
+                .style("font-family", this.font.family())
                 .text(`${this.chartData.fieldInfos.y.label} →`)
             );
     }
@@ -158,6 +160,7 @@ class ScatterChart extends BaseRenderer {
                 const axis = this._getAxis(d3.axisBottom, this.x, this.formats.x.short);
                 if (this.scales.xScaleType === ScaleType.log) axis.ticks(5);
                 axis(g);
+                g.selectAll("text").style("font-family", this.font.family());
             });
     }
 
@@ -169,6 +172,7 @@ class ScatterChart extends BaseRenderer {
                 const axis = this._getAxis(d3.axisLeft, this.y, this.formats.y.short);
                 if (this.scales.yScaleType === ScaleType.log) axis.ticks(5);
                 axis(g);
+                g.selectAll("text").style("font-family", this.font.family());
             });
     }
 
@@ -210,6 +214,7 @@ class ScatterChart extends BaseRenderer {
             .attr("text-anchor", "middle")
             .attr("alignment-baseline", "middle")
             .attr("fill", this.coordinator.colors.text)
+            .style("font-family", this.font.family())
             .text(d => d.name);
     }
 
