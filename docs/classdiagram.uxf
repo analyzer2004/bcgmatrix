@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>2</zoom_level>
+  <zoom_level>1</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1226</x>
-      <y>566</y>
-      <w>106</w>
-      <h>66</h>
+      <x>1119</x>
+      <y>198</y>
+      <w>53</w>
+      <h>20</h>
     </coordinates>
     <panel_attributes>BCGMatrix
 --
 -_dataset: Object[]
--_options: BCGMatrixOptions
 -_coordinator: Coordinator
 +{readonly} container: SVGElement
 +{readonly} chartData: ChartData
@@ -20,15 +19,8 @@
 +{readonly} scales: Scales
 +{readonly} zones: Zones
 --
-+BCGMatrix(container: SVGElement)
-+{chainable} size([width: Number, height: Number]): BCGMatrix | Size
-+{chainable} options(options: BCGMatrixOptions): BCGMatrix | BCGMatrixOptions
-+{chainable} zones(zones: Zones): BCGMatrix | Zones
-+{chainable} colors(colors: Colors): BCGMatrix | Colors		
-+{chainable} columns(columns: FieldInfos): BCGMatrix | FieldInfos
-+{chainable} font(font: Font): BCGMatrix | Font
-+{chainable} events(events: Events): BCGMatrix | Events
-+render(): BCGMatrix
++BCGMatrix(data: Object[], options: Object, container: HTMLElement)
++render(): SVGElement
 +dispose()
 
 group=14</panel_attributes>
@@ -37,50 +29,53 @@ group=14</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1276</x>
-      <y>644</y>
-      <w>56</w>
-      <h>50</h>
+      <x>1144</x>
+      <y>223</y>
+      <w>28</w>
+      <h>25</h>
     </coordinates>
     <panel_attributes>BCGMatrixOptions
 --
++width: float
++height: float
 +dotRadius: float = 5
 +bubbleRadiusRange: [0..1] = [5, 30]
 +highlightScope: String = "none"
-+numberOfTopBottom: int = 5
++numOfTopBottoms: int = 5
 +showTooltip: bool = true
 +showAnnotation: bool = true
 +xInitValue: float
-+xExponent: float = 1
-+xScaleType: String = "linear"
-+yInitValue: float
-+yExponent: float = 1
-+yScaleType: String = "linear"
 +showTicksOnRules: bool = true
++x: AxisSettings,
++y: AxisSettings,
++columns: FieldInfos,
++zones: Zones,
++colors: Colors,
++font: Font,
++events: BCGMatrixEvents
 
-group=14</panel_attributes>
+      group=14</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1300</x>
-      <y>630</y>
-      <w>18</w>
-      <h>18</h>
+      <x>1156</x>
+      <y>217</y>
+      <w>3</w>
+      <h>8</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
--_options
 group=14</panel_attributes>
-    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>1222</x>
-      <y>556</y>
-      <w>118</w>
-      <h>144</h>
+      <x>1117</x>
+      <y>193</y>
+      <w>59</w>
+      <h>89</h>
     </coordinates>
     <panel_attributes>bcgmatrix.js
 --
@@ -91,10 +86,10 @@ group=14</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1366</x>
-      <y>698</y>
-      <w>116</w>
-      <h>34</h>
+      <x>1189</x>
+      <y>264</y>
+      <w>58</w>
+      <h>17</h>
     </coordinates>
     <panel_attributes>ChartData
 --
@@ -113,10 +108,10 @@ group=21</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1374</x>
-      <y>804</y>
-      <w>106</w>
-      <h>24</h>
+      <x>1193</x>
+      <y>317</y>
+      <w>53</w>
+      <h>12</h>
     </coordinates>
     <panel_attributes>FieldInfo
 --
@@ -133,10 +128,10 @@ group=21</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1372</x>
-      <y>746</y>
-      <w>106</w>
-      <h>34</h>
+      <x>1192</x>
+      <y>288</y>
+      <w>53</w>
+      <h>17</h>
     </coordinates>
     <panel_attributes>FieldInfos
 --
@@ -155,10 +150,10 @@ group=21</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1498</x>
-      <y>806</y>
-      <w>50</w>
-      <h>22</h>
+      <x>1255</x>
+      <y>318</y>
+      <w>25</w>
+      <h>11</h>
     </coordinates>
     <panel_attributes>NumberFormat
 --
@@ -173,10 +168,10 @@ group=21</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1508</x>
-      <y>700</y>
-      <w>78</w>
-      <h>28</h>
+      <x>1260</x>
+      <y>265</y>
+      <w>39</w>
+      <h>14</h>
     </coordinates>
     <panel_attributes>Point
 --
@@ -194,10 +189,10 @@ group=21</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1508</x>
-      <y>732</y>
-      <w>26</w>
-      <h>16</h>
+      <x>1260</x>
+      <y>281</y>
+      <w>13</w>
+      <h>8</h>
     </coordinates>
     <panel_attributes>Extents
 --
@@ -210,10 +205,10 @@ group=21</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1538</x>
-      <y>738</y>
-      <w>26</w>
-      <h>26</h>
+      <x>1275</x>
+      <y>284</y>
+      <w>13</w>
+      <h>13</h>
     </coordinates>
     <panel_attributes>&lt;&lt;enum&gt;&gt;
 ValueFlag
@@ -230,10 +225,10 @@ group=21</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1426</x>
-      <y>730</y>
-      <w>18</w>
-      <h>20</h>
+      <x>1219</x>
+      <y>280</y>
+      <w>9</w>
+      <h>10</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +fieldInfos
@@ -243,10 +238,10 @@ group=21</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1426</x>
-      <y>778</y>
-      <w>14</w>
-      <h>30</h>
+      <x>1219</x>
+      <y>304</y>
+      <w>7</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +name
@@ -259,10 +254,10 @@ group=21</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1480</x>
-      <y>710</y>
-      <w>32</w>
-      <h>8</h>
+      <x>1246</x>
+      <y>270</y>
+      <w>16</w>
+      <h>4</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 +dataset
@@ -272,10 +267,10 @@ group=21</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1480</x>
-      <y>718</y>
-      <w>34</w>
-      <h>26</h>
+      <x>1246</x>
+      <y>274</y>
+      <w>17</w>
+      <h>13</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +extends
@@ -285,10 +280,10 @@ group=21</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1478</x>
-      <y>814</y>
-      <w>24</w>
-      <h>6</h>
+      <x>1245</x>
+      <y>322</y>
+      <w>12</w>
+      <h>3</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 group=21</panel_attributes>
@@ -297,10 +292,10 @@ group=21</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1546</x>
-      <y>726</y>
-      <w>12</w>
-      <h>16</h>
+      <x>1279</x>
+      <y>278</y>
+      <w>6</w>
+      <h>8</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +flag
@@ -310,10 +305,10 @@ group=21</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>1362</x>
-      <y>688</y>
-      <w>228</w>
-      <h>152</h>
+      <x>1187</x>
+      <y>259</y>
+      <w>114</w>
+      <h>76</h>
     </coordinates>
     <panel_attributes>chartdata.js
 --
@@ -324,10 +319,10 @@ group=21</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1330</x>
-      <y>600</y>
-      <w>40</w>
-      <h>122</h>
+      <x>1171</x>
+      <y>215</y>
+      <w>20</w>
+      <h>61</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +chartData</panel_attributes>
@@ -336,10 +331,10 @@ group=21</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1448</x>
-      <y>866</y>
-      <w>28</w>
-      <h>24</h>
+      <x>1230</x>
+      <y>348</y>
+      <w>14</w>
+      <h>12</h>
     </coordinates>
     <panel_attributes>Margin
 --
@@ -355,10 +350,10 @@ group=11</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1368</x>
-      <y>866</y>
-      <w>62</w>
-      <h>52</h>
+      <x>1190</x>
+      <y>348</y>
+      <w>31</w>
+      <h>26</h>
     </coordinates>
     <panel_attributes>Measures
 --
@@ -383,10 +378,10 @@ group=11</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1428</x>
-      <y>874</y>
-      <w>24</w>
-      <h>8</h>
+      <x>1220</x>
+      <y>352</y>
+      <w>12</w>
+      <h>4</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +margin
@@ -396,10 +391,10 @@ group=11</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>1362</x>
-      <y>854</y>
-      <w>132</w>
-      <h>72</h>
+      <x>1187</x>
+      <y>342</y>
+      <w>66</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>measures.js
 --
@@ -410,22 +405,22 @@ group=11</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1264</x>
-      <y>630</y>
-      <w>108</w>
-      <h>256</h>
+      <x>1138</x>
+      <y>217</y>
+      <w>54</w>
+      <h>141</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +measures</panel_attributes>
-    <additional_attributes>520.0;1260.0;330.0;1260.0;330.0;860.0;10.0;860.0;10.0;10.0</additional_attributes>
+    <additional_attributes>520.0;1390.0;330.0;1390.0;330.0;990.0;10.0;990.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1408</x>
-      <y>564</y>
-      <w>54</w>
-      <h>66</h>
+      <x>1210</x>
+      <y>197</y>
+      <w>27</w>
+      <h>33</h>
     </coordinates>
     <panel_attributes>Scales
 --
@@ -453,10 +448,10 @@ group=12</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1370</x>
-      <y>646</y>
-      <w>124</w>
-      <h>28</h>
+      <x>1191</x>
+      <y>238</y>
+      <w>62</w>
+      <h>14</h>
     </coordinates>
     <panel_attributes>ScaleType
 --
@@ -473,10 +468,10 @@ group=12</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1432</x>
-      <y>628</y>
-      <w>22</w>
-      <h>22</h>
+      <x>1222</x>
+      <y>229</y>
+      <w>11</w>
+      <h>11</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +xScaleType
@@ -487,10 +482,10 @@ group=12</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>1362</x>
-      <y>556</y>
-      <w>144</w>
-      <h>124</h>
+      <x>1187</x>
+      <y>193</y>
+      <w>72</w>
+      <h>62</h>
     </coordinates>
     <panel_attributes>scales.js
 --
@@ -501,10 +496,10 @@ group=12</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1330</x>
-      <y>582</y>
-      <w>82</w>
-      <h>8</h>
+      <x>1171</x>
+      <y>206</y>
+      <w>41</w>
+      <h>4</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +scales</panel_attributes>
@@ -513,10 +508,10 @@ group=12</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1232</x>
-      <y>834</y>
-      <w>40</w>
-      <h>40</h>
+      <x>1122</x>
+      <y>332</y>
+      <w>20</w>
+      <h>20</h>
     </coordinates>
     <panel_attributes>Zones
 --
@@ -537,10 +532,10 @@ group=20</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1232</x>
-      <y>890</y>
-      <w>62</w>
-      <h>34</h>
+      <x>1122</x>
+      <y>360</y>
+      <w>31</w>
+      <h>17</h>
     </coordinates>
     <panel_attributes>Zone
 --
@@ -559,10 +554,10 @@ group=20</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1252</x>
-      <y>872</y>
-      <w>26</w>
-      <h>22</h>
+      <x>1132</x>
+      <y>351</y>
+      <w>13</w>
+      <h>11</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +questionMarks
@@ -575,10 +570,10 @@ group=20</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>1220</x>
-      <y>820</y>
-      <w>82</w>
-      <h>108</h>
+      <x>1116</x>
+      <y>325</y>
+      <w>41</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>zones.js
 --
@@ -589,22 +584,22 @@ group=20</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1248</x>
-      <y>630</y>
-      <w>14</w>
-      <h>208</h>
+      <x>1130</x>
+      <y>217</y>
+      <w>7</w>
+      <h>117</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +zones</panel_attributes>
-    <additional_attributes>10.0;1020.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;1150.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1078</x>
-      <y>566</y>
-      <w>112</w>
-      <h>102</h>
+      <x>1045</x>
+      <y>198</y>
+      <w>56</w>
+      <h>51</h>
     </coordinates>
     <panel_attributes>Coordinator
 --
@@ -646,10 +641,10 @@ group=15</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1142</x>
-      <y>686</y>
-      <w>50</w>
-      <h>28</h>
+      <x>1077</x>
+      <y>258</y>
+      <w>25</w>
+      <h>14</h>
     </coordinates>
     <panel_attributes>Colors
 --
@@ -667,10 +662,10 @@ group=15</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1164</x>
-      <y>666</y>
-      <w>14</w>
-      <h>24</h>
+      <x>1088</x>
+      <y>248</y>
+      <w>7</w>
+      <h>12</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +colors
@@ -680,10 +675,10 @@ group=15</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>1070</x>
-      <y>556</y>
-      <w>128</w>
-      <h>164</h>
+      <x>1041</x>
+      <y>193</y>
+      <w>64</w>
+      <h>82</h>
     </coordinates>
     <panel_attributes>coordinator.js
 --
@@ -694,10 +689,10 @@ group=15</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1188</x>
-      <y>590</y>
-      <w>42</w>
-      <h>8</h>
+      <x>1100</x>
+      <y>210</y>
+      <w>21</w>
+      <h>4</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +coordinator</panel_attributes>
@@ -706,10 +701,10 @@ group=15</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>780</x>
-      <y>472</y>
-      <w>106</w>
-      <h>46</h>
+      <x>896</x>
+      <y>151</y>
+      <w>53</w>
+      <h>23</h>
     </coordinates>
     <panel_attributes>BaseRenderer
 --
@@ -726,17 +721,16 @@ group=15</panel_attributes>
 --
 +BaseRenderer(coordinator: Coordinator)
 +renderRect(x: float, y: float, width: float, height: float, fill: String, opacity: float)
-
-group=24</panel_attributes>
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>954</x>
-      <y>452</y>
-      <w>60</w>
-      <h>78</h>
+      <x>983</x>
+      <y>141</y>
+      <w>30</w>
+      <h>39</h>
     </coordinates>
     <panel_attributes>Movable
 --
@@ -763,29 +757,27 @@ group=24</panel_attributes>
 #handlePointerMove(e: PointerEvent)
 #handlePointerUp(e: PointerEvent)
 -_convertPosition(e: PointerEvent)
-
-group=24</panel_attributes>
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>884</x>
-      <y>488</y>
-      <w>74</w>
-      <h>6</h>
+      <x>948</x>
+      <y>159</y>
+      <w>37</w>
+      <h>3</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-group=24</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;350.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>936</x>
-      <y>550</y>
-      <w>90</w>
-      <h>60</h>
+      <x>974</x>
+      <y>190</y>
+      <w>45</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>Rule
 --
@@ -806,29 +798,27 @@ group=24</panel_attributes>
 +hideLabel()
 -_rotateTicks(g: SVGGElement)
 -_stick(v: float, ticks: float[]): float
-
-group=24</panel_attributes>
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>982</x>
-      <y>528</y>
-      <w>6</w>
-      <h>26</h>
+      <x>997</x>
+      <y>179</y>
+      <w>3</w>
+      <h>13</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-group=24</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>946</x>
-      <y>614</y>
-      <w>62</w>
-      <h>34</h>
+      <x>979</x>
+      <y>222</y>
+      <w>31</w>
+      <h>17</h>
     </coordinates>
     <panel_attributes>Grip
 --
@@ -840,17 +830,16 @@ group=24</panel_attributes>
 +y: float
 --
 +Grip(coordinator: Coordinator, x: float, y: float)
-+render()
-group=24</panel_attributes>
++render()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1024</x>
-      <y>578</y>
-      <w>58</w>
-      <h>10</h>
+      <x>1018</x>
+      <y>204</y>
+      <w>29</w>
+      <h>5</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +ruleX
@@ -860,10 +849,10 @@ group=24</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1006</x>
-      <y>620</y>
-      <w>76</w>
-      <h>8</h>
+      <x>1009</x>
+      <y>225</y>
+      <w>38</w>
+      <h>4</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +grip</panel_attributes>
@@ -872,10 +861,10 @@ group=24</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>924</x>
-      <y>710</y>
-      <w>114</w>
-      <h>54</h>
+      <x>968</x>
+      <y>270</y>
+      <w>57</w>
+      <h>27</h>
     </coordinates>
     <panel_attributes>Cell
 --
@@ -895,17 +884,16 @@ group=24</panel_attributes>
 +Cell(svg: SVGElement, x: float, y: float, width: float, height: float, zone: Zone)
 +render(): Cell
 -_transform()
-
-group=24</panel_attributes>
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>980</x>
-      <y>666</y>
-      <w>136</w>
-      <h>48</h>
+      <x>996</x>
+      <y>248</y>
+      <w>68</w>
+      <h>24</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +questionMarks
@@ -917,10 +905,10 @@ group=24</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>754</x>
-      <y>566</y>
-      <w>134</w>
-      <h>122</h>
+      <x>883</x>
+      <y>198</y>
+      <w>67</w>
+      <h>61</h>
     </coordinates>
     <panel_attributes>ScatterChart
 --
@@ -961,17 +949,16 @@ _getAxis(axis: d3.axis, scale: d3.scale, format: NumberFormat)
 -_handlePointerMove(e: PointerEvent, d: Point)
 -_handlePointerLeave(e: PointerEvent, d: Point)
 -_handleClick(e: PointerEvent, d: Point)			
-
-group=24</panel_attributes>
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>654</x>
-      <y>580</y>
-      <w>74</w>
-      <h>36</h>
+      <x>834</x>
+      <y>241</y>
+      <w>37</w>
+      <h>18</h>
     </coordinates>
     <panel_attributes>Highlight
 --
@@ -984,42 +971,39 @@ group=24</panel_attributes>
 +&lt;&lt;static&gt; bottom: int = 6
 +&lt;&lt;static&gt; topBottom: int = 7
 --
-+&lt;&lt;static&gt; getTester(index: int): Function(d: Point): bool
-group=24</panel_attributes>
++&lt;&lt;static&gt; getTester(index: int): Function(d: Point): bool</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>838</x>
-      <y>516</y>
-      <w>6</w>
-      <h>54</h>
+      <x>925</x>
+      <y>173</y>
+      <w>3</w>
+      <h>27</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-group=24</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;250.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>726</x>
-      <y>594</y>
-      <w>32</w>
-      <h>8</h>
+      <x>870</x>
+      <y>248</y>
+      <w>15</w>
+      <h>4</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-+highlight
-group=24</panel_attributes>
-    <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
++highlight</panel_attributes>
+    <additional_attributes>10.0;20.0;130.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>886</x>
-      <y>650</y>
-      <w>196</w>
-      <h>8</h>
+      <x>949</x>
+      <y>240</y>
+      <w>98</w>
+      <h>4</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +scatterChart</panel_attributes>
@@ -1028,24 +1012,23 @@ group=24</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>648</x>
-      <y>552</y>
-      <w>246</w>
-      <h>142</h>
+      <x>830</x>
+      <y>191</y>
+      <w>123</w>
+      <h>71</h>
     </coordinates>
     <panel_attributes>scatterchart.js
 --
-fg=#4e79a7
-group=24</panel_attributes>
+fg=#4e79a7</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>750</x>
-      <y>724</y>
-      <w>86</w>
-      <h>52</h>
+      <x>881</x>
+      <y>277</y>
+      <w>43</w>
+      <h>26</h>
     </coordinates>
     <panel_attributes>InfoLayer
 --
@@ -1064,17 +1047,16 @@ group=24</panel_attributes>
 +hideTooltip()
 +openAnnotation(content: String[], x: float, y: float, r: float)
 +hideAnnotation()
-
-group=24</panel_attributes>
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>788</x>
-      <y>808</y>
-      <w>100</w>
-      <h>64</h>
+      <x>900</x>
+      <y>319</y>
+      <w>50</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>InfoBox
 --
@@ -1097,97 +1079,90 @@ group=24</panel_attributes>
 -_initBox(fill: String, opacity: float: stroke: String)
 -_calcWidth(strs: String[])
 -_convertCoordinate(e: PointerEvent, g: SVGGElement)
-
-group=24</panel_attributes>
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>790</x>
-      <y>882</y>
-      <w>38</w>
-      <h>14</h>
+      <x>901</x>
+      <y>356</y>
+      <w>19</w>
+      <h>7</h>
     </coordinates>
     <panel_attributes>Annotation
 --
 -_pointer: SVGPathElement
--_removePointer()
-group=24</panel_attributes>
+-_removePointer()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>808</x>
-      <y>870</y>
-      <w>6</w>
-      <h>16</h>
+      <x>910</x>
+      <y>350</y>
+      <w>3</w>
+      <h>8</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-group=24</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>810</x>
-      <y>774</y>
-      <w>16</w>
-      <h>38</h>
+      <x>911</x>
+      <y>302</y>
+      <w>8</w>
+      <h>19</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
--_tooltip
-group=24</panel_attributes>
+-_tooltip</panel_attributes>
     <additional_attributes>10.0;170.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>764</x>
-      <y>774</y>
-      <w>30</w>
-      <h>122</h>
+      <x>888</x>
+      <y>302</y>
+      <w>15</w>
+      <h>61</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
--_annotation
-group=24</panel_attributes>
+-_annotation</panel_attributes>
     <additional_attributes>130.0;590.0;10.0;590.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>736</x>
-      <y>794</y>
-      <w>166</w>
-      <h>108</h>
+      <x>874</x>
+      <y>312</y>
+      <w>83</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>infobox.js
 --
-fg=#4e79a7
-group=24</panel_attributes>
+fg=#4e79a7</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>794</x>
-      <y>686</y>
-      <w>18</w>
-      <h>42</h>
+      <x>903</x>
+      <y>258</y>
+      <w>9</w>
+      <h>21</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-+infoLaye
-group=24</panel_attributes>
++infoLaye</panel_attributes>
     <additional_attributes>10.0;190.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>550</x>
-      <y>632</y>
-      <w>66</w>
-      <h>52</h>
+      <x>755</x>
+      <y>144</y>
+      <w>33</w>
+      <h>26</h>
     </coordinates>
     <panel_attributes>LabelMover
 --
@@ -1205,17 +1180,16 @@ group=24</panel_attributes>
 +run()
 -_initialize()
 -_calcBorder()
--_findClogs(): Bubble[]
-group=24</panel_attributes>
+-_findClogs(): Bubble[]</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>550</x>
-      <y>694</y>
-      <w>66</w>
-      <h>66</h>
+      <x>755</x>
+      <y>175</y>
+      <w>33</w>
+      <h>33</h>
     </coordinates>
     <panel_attributes>Bubble
 --
@@ -1237,17 +1211,16 @@ group=24</panel_attributes>
 -_moveText(factor: int)
 -_addLink(dir: Direction)
 -_convertPoint(x: float, y: float): [x, y]
--&lt;&lt;debug&gt;&gt; _plotBoundary(b: Bubble)
-group=24</panel_attributes>
+-&lt;&lt;debug&gt;&gt; _plotBoundary(b: Bubble)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>550</x>
-      <y>774</y>
-      <w>66</w>
-      <h>24</h>
+      <x>755</x>
+      <y>215</y>
+      <w>33</w>
+      <h>12</h>
     </coordinates>
     <panel_attributes>Block
 --
@@ -1256,17 +1229,16 @@ group=24</panel_attributes>
 +&lt;&lt;readonly&gt;&gt; isValid: bool
 --
 +Block(elem: SVGText | SVGCircle)
-+overlaps(target: Block): bool
-group=24</panel_attributes>
++overlaps(target: Block): bool</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>550</x>
-      <y>810</y>
-      <w>66</w>
-      <h>50</h>
+      <x>755</x>
+      <y>233</y>
+      <w>33</w>
+      <h>25</h>
     </coordinates>
     <panel_attributes>Boundry
 --
@@ -1284,17 +1256,16 @@ group=24</panel_attributes>
 +moveTo(x: float, y: float)
 +clone(): Boundary
 +copyFrom(source: Boundary)
-
-group=24</panel_attributes>
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>506</x>
-      <y>834</y>
-      <w>30</w>
-      <h>26</h>
+      <x>798</x>
+      <y>235</y>
+      <w>15</w>
+      <h>13</h>
     </coordinates>
     <panel_attributes>&lt;&lt;enum&gt;&gt;
 Direction
@@ -1303,114 +1274,162 @@ Direction
 +&lt;&lt;static&gt;&gt; up = 1
 +&lt;&lt;static&gt;&gt; down = 2
 +&lt;&lt;static&gt;&gt; left = 4
-+&lt;&lt;static&gt;&gt; right = 8
-group=24</panel_attributes>
++&lt;&lt;static&gt;&gt; right = 8</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>580</x>
-      <y>682</y>
-      <w>18</w>
-      <h>16</h>
+      <x>770</x>
+      <y>169</y>
+      <w>9</w>
+      <h>8</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
--_bubbles
-group=24</panel_attributes>
+-_bubbles</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>580</x>
-      <y>758</y>
-      <w>14</w>
-      <h>20</h>
+      <x>770</x>
+      <y>207</y>
+      <w>7</w>
+      <h>10</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 +circle
-+text
-group=24</panel_attributes>
++text</panel_attributes>
     <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>580</x>
-      <y>796</y>
-      <w>20</w>
-      <h>18</h>
+      <x>770</x>
+      <y>226</y>
+      <w>10</w>
+      <h>9</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-+boundary
-group=24</panel_attributes>
++boundary</panel_attributes>
     <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>534</x>
-      <y>844</y>
-      <w>20</w>
-      <h>8</h>
+      <x>787</x>
+      <y>240</y>
+      <w>13</w>
+      <h>4</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-
-group=24</panel_attributes>
-    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
+</panel_attributes>
+    <additional_attributes>110.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>496</x>
-      <y>620</y>
-      <w>138</w>
-      <h>248</h>
+      <x>751</x>
+      <y>138</y>
+      <w>69</w>
+      <h>124</h>
     </coordinates>
     <panel_attributes>labelmover.js
 --
-fg=#4e79a7
-group=24</panel_attributes>
+fg=#4e79a7</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>614</x>
-      <y>652</y>
-      <w>144</w>
-      <h>6</h>
+      <x>787</x>
+      <y>154</y>
+      <w>98</w>
+      <h>57</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
-group=24</panel_attributes>
-    <additional_attributes>10.0;10.0;700.0;10.0</additional_attributes>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;600.0;10.0;600.0;550.0;960.0;550.0</additional_attributes>
   </element>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>470</x>
-      <y>430</y>
-      <w>590</w>
-      <h>500</h>
+      <x>741</x>
+      <y>130</y>
+      <w>295</w>
+      <h>250</h>
     </coordinates>
     <panel_attributes>renderers
 --
 lt=.
-fg=#aaaaaa
-group=24</panel_attributes>
+fg=#aaaaaa</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>924</x>
-      <y>528</y>
-      <w>56</w>
-      <h>102</h>
+      <x>968</x>
+      <y>179</y>
+      <w>28</w>
+      <h>51</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-
-group=24</panel_attributes>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>260.0;10.0;260.0;70.0;10.0;70.0;10.0;490.0;110.0;490.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1155</x>
+      <y>255</y>
+      <w>20</w>
+      <h>8</h>
+    </coordinates>
+    <panel_attributes>AxisSettings
+--
++initValue: float
++exponent: float = 1
++scaleType: String = "linear"
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1163</x>
+      <y>247</y>
+      <w>5</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++x,y</panel_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1144</x>
+      <y>268</y>
+      <w>29</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>BCGMatrixEvents
+--
++onclick(e: PointerEvent, d: Dot)
++onhover(e: PointerEvent, d: Dot)
++onleave(e: PointerEvent, d: Dot)
++onrulechange(id: int, pos: float, value: float)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1148</x>
+      <y>247</y>
+      <w>8</w>
+      <h>23</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
++events</panel_attributes>
+    <additional_attributes>10.0;210.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>

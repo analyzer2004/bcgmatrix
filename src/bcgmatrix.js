@@ -1,3 +1,6 @@
+// https://github.com/analyzer2004/bcgmatrix
+// Copyright 2021 Eric Lo 
+
 import { ChartData } from "./chartdata.js";
 import Coordinator from "./coordinator.js";
 import { Measures } from "./measures.js";
@@ -6,122 +9,120 @@ import { Scales, ScaleType } from "./scales.js";
 import Zones from "./zones.js";
 
 export default class BCGMatrix {
-    constructor(container) {
+    constructor(
+        data, 
+        {
+            width = 1024,
+            height = 768,
+            dotRadius = 5,
+            bubbleRadiusRange = [5, 30],
+            highlightScope = "none", // "none", "all", "min", "max", "minMax", "top", "bottom", "topBottom"
+            numOfTopBottoms = 5,
+            showTooltip = true,
+            showAnnotation = true,
+            showTicksOnRules = true,
+            x = {
+                initValue: null,
+                exponent: 1,
+                scaleType: "linear", // "linear", "log", "sqrt", "pow"
+            },
+            y = {
+                initValue: null,
+                exponent: 1,
+                scaleType: "linear", // "linear", "log", "sqrt", "pow"
+            },
+            columns = {},
+            zones = {},
+            colors = {},
+            font = {},
+            events = {}
+        } = {},
+        container = document.createElement("div")
+    ) {
+        const that = this;
+
         this._container = container;
-
-        this._dataset = null;
-        this._options = new BCGMatrixOptions();
-
+        this._dataset = data;
         this._zones = new Zones();
         this._chartData = new ChartData();
         this._measures = new Measures(this);
         this._scales = new Scales(this);
         this._coordinator = new Coordinator(this);
+
+        processOptions();        
+
+        function processOptions() {
+            const { _measures: m, _chartData: d, _scales: s, _coordinator: c } = that;
+
+            that._zones.copyFrom(zones);                        
+            m.width = width;
+            m.height = height;
+            m.font.copyFrom(font);
+            d.numOfTopBottoms = numOfTopBottoms;
+            d.fieldInfos.copyFrom(columns);
+            s.dotRadius = dotRadius;
+            s.bubbleRadiusRange = bubbleRadiusRange;
+            if (x) {
+                c.xInitValue = x.initValue;
+                if (x.exponent !== null && x.exponent !== undefined) s.xExponent = x.exponent;
+                if (x.scaleType) s.xScaleType = ScaleType[x.scaleType];
+            }
+            if (y) {
+                c.yInitValue = y.initValue;
+                if (y.exponent !== null && y.exponent !== undefined) s.yExponent = y.exponent;
+                if (y.scaleType) s.yScaleType = ScaleType[y.scaleType];
+            }
+            c.colors.copyFrom(colors);
+            c.highlight = Highlight[highlightScope];
+            c.showTicksOnRules = showTicksOnRules;
+            c.scatterChart.infoLayer.showTooltip = showTooltip;
+            c.scatterChart.infoLayer.showAnnotation = showAnnotation;
+            c.scatterChart.onclick = events.onclick;
+            c.scatterChart.onhover = events.onhover;
+            c.scatterChart.onleave = events.onleave;
+            c.onrulemove = events.onrulemove;
+            c.onrulechange = events.onrulechange;            
+        }
     }
 
     get container() { return this._container; }
     get chartData() { return this._chartData; }
     get measures() { return this._measures; }
     get scales() { return this._scales; }
-
-    size(_) {
-        if (arguments.length) {
-            this._measures.width = _[0];
-            this._measures.height = _[1];
-            return this;
-        }
-        else {
-            return [this._measures.width, this._measures.height];
-        }
-    }
-
-    options(_) {
-        return arguments.length ? (this._options = Object.assign(this._options, _), this) : this._options;
-    }
-
-    zones(_) {
-        return arguments.length ? (this._zones.copyFrom(_), this) : this._zones;
-    }
-
-    colors(_) {
-        return arguments.length ? (this._coordinator.colors.copyFrom(_), this) : this._zones;
-    }
-
-    columns(_) {
-        return arguments.length ? (this._chartData.fieldInfos.copyFrom(_), this) : this._chartData.fieldInfos;
-    }
-
-    font(_) {
-        return arguments.length ? (this._measures.font.copyFrom(_), this) : this._measures.font;
-    }
-
-    data(_) {
-        return arguments.length ? (this._dataset = _, this) : this._dataset;
-    }
-
-    events(_) {
-        if (arguments.length) {
-            this._coordinator.scatterChart.onclick = _.onclick;
-            this._coordinator.scatterChart.onhover = _.onhover;
-            this._coordinator.scatterChart.onleave = _.onleave;
-            this._coordinator.onrulechange = _.onrulechange;
-            return this;
-        }
-        else {
-            return {
-                onclick: this._coordinator.scatterChart.onclick,
-                onhover: this._coordinator.scatterChart.onhover,
-                oncancel: this._coordinator.scatterChart.oncancel,
-                onrulechange: this._coordinator.onrulechange
-            }
-        }
-    }
+    get zones() { return this._zones; }
 
     render() {
-        const options = this._options;
+        const detached = !this._container.isConnected;
+        if (detached) document.body.appendChild(this._container);
 
-        this._chartData.numOfTopBottom = options.numberOfTopBottom;
         this._chartData.process(this._dataset);
         this._measures.initialize();
-
-        this._scales.dotRadius = options.dotRadius;
-        this._scales.bubbleRadiusRange = options.bubbleRadiusRange;
-        this._scales.xExponent = options.xExponent;
-        this._scales.yExponent = options.yExponent;
-        this._scales.xScaleType = ScaleType[options.xScaleType];
-        this._scales.yScaleType = ScaleType[options.yScaleType];
         this._scales.initialize();
-
-        this._coordinator.highlight = Highlight[options.highlightScope];
-        this._coordinator.showTicksOnRules = options.showTicksOnRules;
-        this._coordinator.xInitValue = options.xInitValue;
-        this._coordinator.yInitValue = options.yInitValue;
-        this._coordinator.scatterChart.infoLayer.showTooltip = options.showTooltip;
-        this._coordinator.scatterChart.infoLayer.showAnnotation = options.showAnnotation;
         this._coordinator.render();
 
-        return this;
+        if (detached) {
+            const svg = this._coordinator.svg.node();
+            this._container.removeChild(svg);
+            this._container.remove();
+            return svg;
+        }
     }
 
     dispose() {
         if (this._coordinator) this._coordinator.dispose();
     }
-}
 
-class BCGMatrixOptions {
-    constructor() {
-        this.dotRadius = 5;
-        this.bubbleRadiusRange = [5, 30];
-        this.highlightScope = "none"; // "none", "all", "min", "max", "minMax", "top", "bottom", "topBottom"
-        this.numberOfTopBottom = 5;
-        this.showTooltip = true;
-        this.showAnnotation = true;
-        this.xInitValue = null;
-        this.xExponent = 1;
-        this.xScaleType = "linear"; // "linear", "log", "sqrt", "pow"
-        this.yInitValue = null;
-        this.yExponent = 1;
-        this.yScaleType = "linear"; // "linear", "log", "sqrt", "pow"
-        this.showTicksOnRules = true;
+    getDots(zoneIndex) {
+        const
+            { _coordinator: c, _chartData: d } = this,
+            { xLevel: x, yLevel: y } = c.scatterChart;
+
+        let tester;
+        if (zoneIndex === 0) tester = d => d.x < x && d.y >= y; // question marks
+        else if (zoneIndex === 1) tester = d => d.x >= x && d.y >= y; // stars
+        else if (zoneIndex === 2) tester = d => d.x < x && d.y < y; // dogs
+        else tester = d => d.x >= x && d.y < y; // cows
+
+        return d.dataset.filter(tester).map(d => ({...d}));
     }
 }

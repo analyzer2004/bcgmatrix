@@ -33,19 +33,14 @@ export default class Rule extends Movable {
 
         this._g = this.svg.append("g")
             .call(g => {
-                g.append("line")
+                const line = g.append("line")
                     .attr("stroke", "#aaa")
                     .attr("stroke-width", 2)
                     .attr("stroke-dasharray", "2")
                     .attr("x1", this._isVertical ? 0 : this._x1)
                     .attr("y1", this._isVertical ? this._y1 : 0)
                     .attr("x2", this._isVertical ? 0 : this._x2)
-                    .attr("y2", this._isVertical ? this._y2 : 0)
-                    .clone()
-                    .attr("stroke-width", 7)
-                    .attr("stroke-dasharray", "")
-                    .attr("opacity", 0)
-                    .style("cursor", this._isVertical ? "col-resize" : "row-resize");
+                    .attr("y2", this._isVertical ? this._y2 : 0);
 
                 this._label = g.append("text")
                     .attr("font-family", "sans-serif")
@@ -58,7 +53,7 @@ export default class Rule extends Movable {
                         .data(ticks.slice(1, ticks.length - 1))
                         .join("g")
                         .attr("class", "tick")
-                        .attr("transform", d => `translate(${this._isVertical ? 0 : d},${this._isVertical ? d: 0})`)
+                        .attr("transform", d => `translate(${this._isVertical ? 0 : d},${this._isVertical ? d : 0})`)
                         .call(g => {
                             g.append("text").attr("text-anchor", "middle")
                                 .attr("dy", "0.32em")
@@ -74,6 +69,13 @@ export default class Rule extends Movable {
                         });
                     this._rotateTicks(g);
                 }
+
+                const grip = line.clone()
+                    .attr("stroke-width", 7)
+                    .attr("stroke-dasharray", "")
+                    .attr("opacity", 0)
+                    .style("cursor", this._isVertical ? "col-resize" : "row-resize");
+                g.node().append(grip.node());
             });
         return super.render(this._g);
     }
@@ -142,9 +144,9 @@ export default class Rule extends Movable {
             : p.y >= yRange[1] && p.y <= yRange[0];
     }
 
-    handlePointerUp(e) {        
+    handlePointerUp(e) {
         super.handlePointerUp(e);
-        this.hideLabel();        
+        this.hideLabel();
     }
 
     transform() {

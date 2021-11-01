@@ -4,7 +4,7 @@ class ChartData {
         this._fieldInfos = new FieldInfos();
         this._extents = new Extents();
 
-        this.numOfTopBottom = 5;
+        this.numOfTopBottoms = 5;
     }
 
     get dataset() { return this._dataset; }
@@ -44,8 +44,8 @@ class ChartData {
         if (names.radius && names.radius !== "") {
             this._dataset[0].flag = ValueFlag.min;
             this._dataset[len - 1].flag = ValueFlag.max;
-            this._dataset.slice(0, this.numOfTopBottom).forEach(d => d.flag |= ValueFlag.bottomGroup);
-            this._dataset.slice(-this.numOfTopBottom).forEach(d => d.flag |= ValueFlag.topGroup);
+            this._dataset.slice(0, this.numOfTopBottoms).forEach(d => d.flag |= ValueFlag.bottomGroup);
+            this._dataset.slice(-this.numOfTopBottoms).forEach(d => d.flag |= ValueFlag.topGroup);
         }
     }
 }
@@ -120,8 +120,8 @@ class NumberFormat {
 
 class Extents {
     constructor() {
-        this.x = [0, 0];
-        this.y = [0, 0];
+        this.x = [Number.MAX_VALUE, Number.MIN_VALUE];
+        this.y = [Number.MAX_VALUE, Number.MIN_VALUE];
         this.radius = [0, 0];
     }
 }

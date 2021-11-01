@@ -8,51 +8,59 @@
 
         d3.csv("./messylabel.csv", d3.autoType)
             .then(data => {
-                new BCGMatrix(document.querySelector("#rootSvg"))
-                    .size([1280, 960])
-                    .options({
-                        dotRadius: 5,
-                        bubbleRadiusRange: [5, 40],
+                const matrix = new BCGMatrix(
+                    data.filter(d => d.Year === 2020),
+                    {
+                        width: 1280,
+                        height: 960,
                         highlightScope: "all",
-                        xScaleType: "linear",
-                        xExponent: 0.15,
-                        yScaleType: "linear",
-                        yExponent: 0.08
-                    })
-                    .data(data.filter(d => d.Year === 2020))
-                    .columns({
-                        name: { name: "State" },
                         x: {
-                            name: "Profit",
-                            label: "Sales (USD)",
-                            format: { short: ",.2s", long: ",.0f" }
+                            scaleType: "linear",
+                            exponent: 0.15
                         },
                         y: {
-                            name: "YOY",
-                            label: "YOY %",
-                            format: { short: ".0%", long: ".1%" }
+                            scaleType: "linear",
+                            exponent: 0.08
                         },
-                        radius: {
-                            name: "Order",
-                            label: "Profit (USD)",
-                            format: { short: ",.2s", long: ",.0f" }
+                        columns: {
+                            name: { name: "State" },
+                            x: {
+                                name: "Profit",
+                                label: "Sales (USD)",
+                                format: { short: ",.2s", long: ",.0f" }
+                            },
+                            y: {
+                                name: "YOY",
+                                label: "YOY %",
+                                format: { short: ".0%", long: ".1%" }
+                            },
+                            radius: {
+                                name: "Order",
+                                label: "Profit (USD)",
+                                format: { short: ",.2s", long: ",.0f" }
+                            }
+                        },
+                        zones: {
+                            questionMarks: { icon: "./question.svg" },
+                            dogs: { icon: "./dog.svg" },
+                            stars: { icon: "./star.svg" },
+                            cows: { icon: "./cow.svg" }
+                        },
+                        font: {
+                            family: "Sans-serif",
+                            size: 9
+                        },
+                        events: {
+                            onhover: d => console.log(d),
+                            onrulemove: (id, pos, value) => {
+                                //console.log(`${id}: (${pos},${value})`);
+                                console.log(matrix.getDots(0));
+                            }
                         }
-                    })                    
-                    .zones({                        
-                        questionMarks: { icon: "./question.svg" },
-                        dogs: { icon: "./dog.svg" },
-                        stars: { icon: "./star.svg" },
-                        cows: { icon: "./cow.svg" }
-                    })
-                    .font({
-                        family: "Sans-serif",
-                        size: 9
-                    })
-                    .events({
-                        onhover: d => console.log(d),
-                        onrulechange: (id, pos, value) => console.log(`${id}: (${pos},${value})`)
-                    })
-                    .render();
+                    },
+                    document.querySelector("#rootSvg")
+                );
+                matrix.render();
             });
     </script>
 

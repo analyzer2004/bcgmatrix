@@ -23,12 +23,13 @@ export default class Coordinator {
         this.showTicksOnRules = true;
         this.xInitValue = null;
         this.yInitValue = null;
+        this.onrulemove = null;
         this.onrulechange = null;
     }
 
     get chart() { return this._chart; }
-    get width() { return this.chart.measures.width; }
-    get height() { return this.chart.measures.height; }
+    get width() { return this._chart.measures.width; }
+    get height() { return this._chart.measures.height; }
     get svg() { return this._svg; }
     get colors() { return this._colors; }
     get scatterChart() { return this._scatterChart; }
@@ -36,6 +37,7 @@ export default class Coordinator {
     render() {
         this._validateInitValues();
         this._renderSvg();
+        this._chart.measures.moveMeasureText(this._svg);
         this._renderBackground();
 
         this._renderZones();                
@@ -54,7 +56,7 @@ export default class Coordinator {
             x = this.chart.scales.x,
             y = this.chart.scales.y,
             validate = (scale, value, defaultValue) => {
-                if (value) {
+                if (value !== null && value !== undefined) {
                     const domain = scale.domain();
                     return value >= domain[0] && value <= domain[1] ? value : defaultValue;
                 }
@@ -84,7 +86,7 @@ export default class Coordinator {
 
     _renderZones() {
         const
-            zones = this.chart.zones(),
+            zones = this.chart.zones,
             { x, y, xr, yr, xc, yc } = this._getScales(),
             m = this.chart.measures.margin,
             w = this.width - m.right,
@@ -158,6 +160,7 @@ export default class Coordinator {
             that._cows.x = xp;
             that._grip.x = xp;
             that._scatterChart.xLevel = x.invert(xp);
+            if (that.onrulemove) that.onrulemove(1, that._ruleX.position, that._ruleX.value);
         }
 
         function resetX(e) {
@@ -182,6 +185,7 @@ export default class Coordinator {
             that._cows.y = yp;
             that._grip.y = yp;
             that._scatterChart.yLevel = y.invert(yp);
+            if (that.onrulemove) that.onrulemove(2, that._ruleY.position, that._ruleY.value);
         }
 
         function resetY(e) {

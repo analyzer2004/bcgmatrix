@@ -39,6 +39,14 @@ class Measures {
         return Math.max(...array.map(s => this.calcStringWidth(s, font)));
     }
 
+    moveMeasureText(svg) {
+        if (svg) {
+            const node = this._measureText.node();
+            node.remove();
+            svg.node().append(node);
+        }
+    }
+
     _createMeasureText() {
         this._measureText = d3.select(this._chart.container)
             .append("svg")
@@ -70,7 +78,7 @@ class Margin {
 }
 
 class Font {
-    constructor(family = "Sans-serif", size = "12", style = "normal", weight = "normal") {
+    constructor(family = "Sans-serif", size = 9, style = "normal", weight = "normal") {
         this._family = family;
         this._size = size;
         this._style = style;
