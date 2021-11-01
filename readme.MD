@@ -11,7 +11,8 @@ For live demos and sample codes, please see [BCGMatrix Component](https://observ
 
 ## API Reference
 
-* **BCGMatrix(data, options, container)** - Constructs a new instance of BCGMatrix with the specified dataset and options. The container is usually a SVG but can be any DOM element as well, and it is optional.
+* **BCGMatrix(data, options)** - Constructs a new instance of BCGMatrix with the specified dataset and options. 
+  * **container** - the container is usually a SVG element but can be any DOM element as well, and it is optional.
   * **width** - the width of the matrix. Default is 1024.
   * **height** - the height of the matrix. Default is 768.
   * **highlightScope** - sets the highlight scope to *"none"*, *"all"*, *"min"*, *"max"*, *"minMax"*, *"top"*, *"bottom"* or *"topBottom"*. Default is "none".
