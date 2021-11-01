@@ -12,6 +12,7 @@ export default class BCGMatrix {
     constructor(
         data, 
         {
+            container = document.createElement("div"),
             width = 1024,
             height = 768,
             dotRadius = 5,
@@ -36,8 +37,7 @@ export default class BCGMatrix {
             colors = {},
             font = {},
             events = {}
-        } = {},
-        container = document.createElement("div")
+        } = {}
     ) {
         const that = this;
 
