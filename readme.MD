@@ -7,7 +7,7 @@ The **BCG Matrix** (aka **Growth-share matrix**) provides a strategic view for a
 
 For live demos and sample codes, please see [BCGMatrix Component](https://observablehq.com/@analyzer2004/bcgmatrix)
 
-<img src="https://github.com/analyzer2004/bcgmatrix/blob/master/images/cover.png" width="768">
+<img src="https://github.com/analyzer2004/bcgmatrix/blob/master/images/cover.jpg" width="768">
 
 ## API Reference
 
