@@ -1,9 +1,9 @@
-# BCGMatrix Component
+# BCG Matrix Component
 The **BCG Matrix** (aka **Growth-share matrix**) provides a strategic view for analyzing business units, products or services by splitting them into four quadrants according to the growth and relative market share: **question marks**, **stars**, **dogs** and **cows**. Each quadrant has its own set of unique characteristics that represents a certain degree of profitability. This helps companies decide where to focus their resources to generate the most value, as well as where to cut their losses. Below is a brief breakdown of each quadrant:
 - **Cows: Low growth, high share**. They are typically the leading products and companies should milk these  **"cash cows"** for cash.
 - **Stars: High growth, high share**. Products that are in a fast-growing market and generate the most cash are considered stars and should be invested in more.
-- **Question Marks: High grwoth, low share**. Products in this category are growing rapidly but bring little in return and they usually consume significant amount of resoruces. These must be analyzed carefully in order to determine whether they are worth to invest more or should discard.
-- **Dogs: Low growth, low share**. Dogs (aka pets) frequently break even, are neither generating nor consuming a large amount of resources. However, they are usually cash traps and ties up investment that could better be untilized elsewhere. Products in this quadrant are candidates for liqudation unless they have some other strategic purpose.
+- **Question Marks: High growth, low share**. Products in this category are growing rapidly but bring little in return and they usually consume significant amount of resources. These must be analyzed carefully in order to determine whether they are worth to invest more or should discard.
+- **Dogs: Low growth, low share**. Dogs (aka pets) frequently break even, are neither generating nor consuming a large amount of resources. However, they are usually cash traps and tie up investment that could better be utilized elsewhere. Products in this quadrant are candidates for liquidation unless they have some other strategic purpose.
 
 For live demos and sample codes, please see [BCGMatrix Component](https://observablehq.com/@analyzer2004/bcgmatrix)
 
